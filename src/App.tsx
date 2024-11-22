@@ -7,6 +7,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import TeacherNavigator from "./modules/Teachers/routes";
 import LandingPage from "./page/landingpage";
 import StudentNavigator from "./modules/students/routes";
+import ParentNavigator from "./modules/parent/routes";
 import AuthLogin from "./modules/authentication/screens/auth-login";
 import { Provider } from "react-redux";
 import { store } from "./modules/admins/store";
@@ -23,6 +24,7 @@ const App: FC = () => {
             <Route path="admin/*" element={<AdminNavigator />} />
             <Route path="teacher/*" element={<TeacherNavigator />} />
             <Route path="student/*" element={<StudentNavigator />} />
+            <Route path="parent/*" element={<ParentNavigator />} />
             {/* <Route path="parent/thousi/" element={<Dashboard />} /> */}
           </Routes>
         </Provider>
