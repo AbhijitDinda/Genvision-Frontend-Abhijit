@@ -30,27 +30,27 @@ import { Link } from "react-router-dom";
 const items = [
   {
     title: "Dashboard",
-    url: "/student/dashboard",
+    url: "/parent/dashboard",
     icon: Home,
   },
   {
     title: "Assignments",
-    url: "/student/assignments",
+    url: "/parent/assignments",
     icon: BookText,
   },
   {
     title: "Teachers",
-    url: "/student/teachers",
+    url: "/parent/teachers",
     icon: Users,
   },
   {
     title: "Attendance",
-    url: "/student/attendances",
+    url: "/parent/attendances",
     icon: BookOpenCheck,
   },
   {
     title: "Marks",
-    url: "/student/marks",
+    url: "/parent/marks",
     icon: NotebookPen,
   },
 ];
