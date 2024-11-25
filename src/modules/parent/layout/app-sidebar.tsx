@@ -30,7 +30,7 @@ import { Link } from "react-router-dom";
 const items = [
   {
     title: "Dashboard",
-    url: "/parent/dashboard",
+    url: "/parent",
     icon: Home,
   },
   {
