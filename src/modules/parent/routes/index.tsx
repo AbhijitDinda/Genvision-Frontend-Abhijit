@@ -7,6 +7,8 @@ import TeacherProfile from "../features/class/components/teacherprofile.tsx";
 import Assignments from "../features/class/screens/assignments.tsx";
 import AssignmentPaper from "../features/class/components/assignmentpaper.tsx";
 import DashboardAnalysis from "../features/class/screens/dashboard.tsx";
+import ProfilePage from "../features/account/ProfilePage.tsx";
+import Notification from "../features/account/notificationpage.tsx";
 
 
 const ParentNavigator: React.FC = () => {
@@ -15,6 +17,8 @@ const ParentNavigator: React.FC = () => {
       <Sidebar>
         <Routes>
         <Route path="/" element={<DashboardAnalysis />} />
+        <Route path="profile/" element={<ProfilePage />} />
+        <Route path="notification/" element={<Notification />} />
 
 
           <Route path="assignments/" element={<Assignments />} />

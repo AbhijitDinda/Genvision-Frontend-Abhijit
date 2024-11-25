@@ -25,17 +25,10 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-
-export function NavUser({
-  user,
-}: {
-  user?: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
-}) {
+import { useNavigate } from "react-router-dom";
+export function NavUser({ user }: { user?: { name: string; email: string; avatar: string } }) {
   const { isMobile } = useSidebar();
+  const navigate = useNavigate();
 
   return (
     <SidebarMenu>
@@ -77,11 +70,11 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate("profile")}>
                 <BadgeCheck />
-                Account
+                Accounts
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate("notification")}>
                 <Bell />
                 Notifications
               </DropdownMenuItem>

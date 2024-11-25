@@ -109,7 +109,7 @@ const AssignmentPaper: React.FC = () => {
 
         <button
           onClick={() => navigate(-1)}
-          className="mt-6 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          className="mt-6 px-4 py-2 bg-zinc-800 text-white rounded hover:bg-zinc-950"
         >
           Back to Assignments
         </button>
