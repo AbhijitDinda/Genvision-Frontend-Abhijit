@@ -120,8 +120,8 @@ const StatCard: FC<StatCardProps> = ({
 const Attendance: FC = () => {
   return (
     <>
-      <div className="p-6 space-y-6">
-        <div className="grid grid-cols-3 gap-4  mb-8">
+      <div className="p-6 space-y-6 ">
+        <div className="grid grid-cols-3 gap-4  mb-8 ">
           <StatCard
             icon={<User className="text-purple-500" />}
             value="256"

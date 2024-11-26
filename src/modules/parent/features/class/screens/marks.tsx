@@ -149,7 +149,8 @@ const StudentMarksDetailedDashboard = () => {
       <Card>
         <CardHeader>
           <div className="flex justify-between items-center">
-            <CardTitle>Detailed Marks Dashboard</CardTitle>
+            {/* <CardTitle>Detailed Marks Dashboard</CardTitle> */}
+            <h1 className="text-2xl font-bold text-gray-800">Detailed Marks Dashboard</h1>
             <Select value={viewType} onValueChange={setViewType}>
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="View Type" />
