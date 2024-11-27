@@ -26,11 +26,19 @@ const TeacherProfile: React.FC = () => {
   if (!teacher) return <p>Teacher not found!</p>;
 
   return (
-    <div className="p-6 bg-white shadow-md rounded-lg">
-      <img src={teacher.image} alt={teacher.name} className="w-32 h-32 rounded-full mx-auto" />
-      <h1 className="text-2xl font-semibold text-center mt-4">{teacher.name}</h1>
-      <p className="text-center text-gray-500">{teacher.subject}</p>
-      <p className="mt-4">{teacher.description}</p>
+    <div className="flex  justify-center">
+      <div className="p-6 w-11/12 text-center bg-white shadow-md rounded-lg">
+        <img
+          src={teacher.image}
+          alt={teacher.name}
+          className="w-32 h-32 rounded-full mx-auto"
+        />
+        <h1 className="text-2xl font-semibold text-center mt-4">
+          {teacher.name}
+        </h1>
+        <p className="text-center text-gray-500">{teacher.subject}</p>
+        <p className="mt-4">{teacher.description}</p>
+      </div>
     </div>
   );
 };

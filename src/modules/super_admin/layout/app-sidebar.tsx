@@ -31,7 +31,7 @@ import { Link } from "react-router-dom";
 const items = [
   {
     title: "Dashboard",
-    url: "/super_admin/dashboard",
+    url: "/super_admin/",
     icon: Home,
   },
   {

@@ -13,7 +13,7 @@ const SchoolNavigator: React.FC = () => {
     <>
       <Sidebar>
         <Routes>
-          <Route path="dashboard/" element={<Dashboard/>} />
+          <Route path="/" element={<Dashboard/>} />
           {/* <Route path="school/*" element={<School />} /> */}
           <Route path="school/" element={<SchoolList />} />
           <Route path="school/add" element={<SchoolAdd />} />

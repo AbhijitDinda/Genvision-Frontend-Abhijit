@@ -18,6 +18,22 @@ const schools = [
     chairman: "Jane Smith",
     students: 350,
   },
+  {
+    id: "3",
+    name: "Green Valley School",
+    location: "New York",
+    image: "https://media.istockphoto.com/id/171306436/photo/red-brick-high-school-building-exterior.jpg?s=612x612&w=0&k=20&c=vksDyCVrfCpvb9uk4-wcBYu6jbTZ3nCOkGHPSgNy-L0=",
+    chairman: "John Doe",
+    students: 500,
+  },
+  {
+    id: "4",
+    name: "Blue Ridge Academy",
+    location: "Los Angeles",
+    image: "https://www.ashokaschools.org/images/video-cover.jpg",
+    chairman: "Jane Smith",
+    students: 350,
+  },
 ];
 
 const SchoolList: React.FC = () => {

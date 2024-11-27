@@ -26,11 +26,18 @@ const StudentProfile: React.FC = () => {
   if (!student) return <p>Student not found!</p>;
 
   return (
-    <div className="p-6 bg-white shadow-md rounded-lg">
-      <img src={student.image} alt={student.name} className="w-32 h-32 rounded-full mx-auto" />
-      <h1 className="text-2xl font-semibold text-center mt-4">{student.name}</h1>
-      <p className="text-center text-gray-500">Grade: {student.grade}</p>
-      <p className="mt-4">{student.bio}</p>
+    <div className="flex  justify-center">
+      <div className="p-6 w-11/12 text-center bg-white shadow-md rounded-lg">
+        <img
+          src={student.image}
+          alt={student.name}
+          className="w-32 h-32 rounded-full mx-auto"
+        />
+        <h1 className="text-2xl font-semibold text-center mt-4">
+          {student.name}
+        </h1>
+        
+      </div>
     </div>
   );
 };
