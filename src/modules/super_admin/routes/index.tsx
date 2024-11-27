@@ -6,6 +6,7 @@ import SchoolAdd from "../feature/school/AddSchoolForm";
 import SchoolDetails from "../feature/school/SchoolDetail";
 import TeacherProfile from "../feature/school/TeacherProfile.tsx";
 import StudentProfile from "../feature/school/StudentProfile.tsx";
+import ParentProfile from "../feature/school/parentprofile.tsx";
 import Dashboard from "../feature/dashboard/index.tsx";
 
 const SchoolNavigator: React.FC = () => {
@@ -14,13 +15,14 @@ const SchoolNavigator: React.FC = () => {
       <Sidebar>
         <Routes>
           <Route path="/" element={<Dashboard/>} />
-          {/* <Route path="school/*" element={<School />} /> */}
           <Route path="school/" element={<SchoolList />} />
           <Route path="school/add" element={<SchoolAdd />} />
           <Route path="school/:id" element={<SchoolDetails />} />
 
           <Route path="school/:id/teacher/:id" element={<TeacherProfile />} />
           <Route path="school/:id/student/:id" element={<StudentProfile />} />
+
+          <Route path="school/:id/student/:id/parent-profile/:id" element={<ParentProfile />} />
         </Routes>
       </Sidebar>
     </>
