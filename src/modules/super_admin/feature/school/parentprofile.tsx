@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 
 const ParentProfile: React.FC = () => {
-  const { id } = useParams();
+  const { parentId } = useParams();
 
   const parents = [
     {
@@ -24,7 +24,7 @@ const ParentProfile: React.FC = () => {
     },
   ];
 
-  const parent = parents.find((parent) => parent.id === id);
+  const parent = parents.find((parent) => parent.id === parentId);
 
   if (!parent)
     return (

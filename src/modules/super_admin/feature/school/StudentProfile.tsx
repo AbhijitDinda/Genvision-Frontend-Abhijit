@@ -1,7 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 
 const StudentProfile: React.FC = () => {
-  const { id } = useParams();
+  const { studentId } = useParams();
 
   const students = [
     {
@@ -30,7 +30,7 @@ const StudentProfile: React.FC = () => {
     },
   ];
 
-  const student = students.find((student) => student.id === id);
+  const student = students.find((student) => student.id === studentId);
 
   if (!student)
     return (

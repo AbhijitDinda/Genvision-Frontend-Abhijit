@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 
 const TeacherProfile: React.FC = () => {
-  const { id } = useParams();
+  const { teacherId } = useParams();
 
   const teachers = [
     {
@@ -29,7 +29,7 @@ const TeacherProfile: React.FC = () => {
     // Add more teachers here...
   ];
 
-  const teacher = teachers.find((teacher) => teacher.id === id);
+  const teacher = teachers.find((teacher) => teacher.id === teacherId);
 
   if (!teacher) return <p className="text-center text-red-500 mt-8">Teacher not found!</p>;
 

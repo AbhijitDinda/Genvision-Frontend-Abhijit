@@ -3,7 +3,7 @@ import api from "@/modules/admins/utils/axios-util";
 
 export const SchoolListApi = async () => {
     const response = await api.get(`/node-admin/schools/`);
-    console.log("API Response:", response);
+    console.log("SchoolListApi Response:", response);
     return response.data;
 };
 
@@ -18,3 +18,14 @@ export const CreateSchoolApi = async (schoolData: { organisationName: string, su
 };
 
 
+export const SchoolStudentListApi = async (schoolId:number) => {
+  const response = await api.get(`/node-admin/schools/${schoolId}/students`);
+  // console.log("SchoolStudentListApi Response:", response);
+  return response.data;
+};
+
+export const SchoolTeacherListApi = async (schoolId:number) => {
+  const response = await api.get(`/superadmin/schools/${schoolId}/teachers`);
+  // console.log("SchoolStudentListApi Response:", response);
+  return response.data;
+};

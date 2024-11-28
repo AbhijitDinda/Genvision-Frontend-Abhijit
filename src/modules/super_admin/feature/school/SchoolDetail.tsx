@@ -1,8 +1,34 @@
 import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import Tabs from "./Tabs";
+import { SchoolStudentListApi, SchoolTeacherListApi } from "../../store/api";
 
 const SchoolDetail: React.FC = () => {
-  const { id } = useParams();
+  const { schoolId } = useParams();
+
+  // Fetch Students Data
+  const {
+    data: students,
+    isLoading: isStudentsLoading,
+    error: studentsError,
+  } = useQuery({
+    queryKey: ["schoolStudents", schoolId],
+    queryFn: () => SchoolStudentListApi(Number(schoolId)),
+    enabled: !!schoolId, // Fetch only when schoolId is available
+  });
+// console.log("students",students)
+
+  // Fetch Teachers Data
+  // const {
+  //   data: teachers,
+  //   isLoading: isTeachersLoading,
+  //   error: teachersError,
+  // } = useQuery({
+  //   queryKey: ["schoolTeachers", schoolId],
+  //   queryFn: () => SchoolTeacherListApi(Number(schoolId)),
+  //   enabled: !!schoolId, // Fetch only when schoolId is available
+  // });
+  // console.log("teachers",teachers)
 
   const school = {
     id: "1",
@@ -47,9 +73,7 @@ const SchoolDetail: React.FC = () => {
               <p className="text-gray-600">{school.location}</p>
             </div>
             <div className="bg-gray-100 p-4 rounded-lg shadow-sm">
-              <h3 className="text-lg font-semibold text-gray-800">
-                Chairman
-              </h3>
+              <h3 className="text-lg font-semibold text-gray-800">Chairman</h3>
               <p className="text-gray-600">{school.chairman}</p>
             </div>
             <div className="bg-gray-100 p-4 rounded-lg shadow-sm">
@@ -62,8 +86,24 @@ const SchoolDetail: React.FC = () => {
         </div>
 
         {/* Tabs Section */}
+        {/* <div className="border-t p-6">
+          {isStudentsLoading || isTeachersLoading ? (
+            <p>Loading data...</p>
+          ) : studentsError || teachersError ? (
+            <p>Error fetching data. Please try again later.</p>
+          ) : (
+            <Tabs students={students} teachers={teachers} />
+          )}
+        </div> */}
+
         <div className="border-t p-6">
-          <Tabs />
+          {isStudentsLoading ? (
+            <p>Loading data...</p>
+          ) : studentsError ? (
+            <p>Error fetching data. Please try again later.</p>
+          ) : (
+            <Tabs students={students} teachers={""}/>
+          )}
         </div>
       </div>
     </div>

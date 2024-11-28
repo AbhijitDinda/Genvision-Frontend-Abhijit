@@ -31,7 +31,7 @@ const SchoolList: React.FC = () => {
   // Extract the schools data
   const schoolList = apiResponse?.data ?? [];
 
-  console.log("School List Data:", schoolList);
+  // console.log("School List Data:", schoolList);
 
   if (isLoading) {
     return <div>Loading...</div>;
