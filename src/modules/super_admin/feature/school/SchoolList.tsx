@@ -1,42 +1,50 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import { FaMapMarkerAlt, FaUserTie, FaUsers } from "react-icons/fa";
+import { useListSchool } from "../../store/hooks";
 
-const schools = [
-  {
-    id: "1",
-    name: "Green Valley School",
-    location: "New York",
-    image: "https://media.istockphoto.com/id/171306436/photo/red-brick-high-school-building-exterior.jpg?s=612x612&w=0&k=20&c=vksDyCVrfCpvb9uk4-wcBYu6jbTZ3nCOkGHPSgNy-L0=",
-    chairman: "John Doe",
-    students: 500,
-  },
-  {
-    id: "2",
-    name: "Blue Ridge Academy",
-    location: "Los Angeles",
-    image: "https://www.ashokaschools.org/images/video-cover.jpg",
-    chairman: "Jane Smith",
-    students: 350,
-  },
-  {
-    id: "3",
-    name: "Green Valley School",
-    location: "New York",
-    image: "https://media.istockphoto.com/id/171306436/photo/red-brick-high-school-building-exterior.jpg?s=612x612&w=0&k=20&c=vksDyCVrfCpvb9uk4-wcBYu6jbTZ3nCOkGHPSgNy-L0=",
-    chairman: "John Doe",
-    students: 500,
-  },
-  {
-    id: "4",
-    name: "Blue Ridge Academy",
-    location: "Los Angeles",
-    image: "https://www.ashokaschools.org/images/video-cover.jpg",
-    chairman: "Jane Smith",
-    students: 350,
-  },
-];
+// Define the type for a school
+interface School {
+  id: number;
+  fullName: string;
+  email: string;
+  phoneNumber: string | null;
+  createdAt: string;
+  tenantId: number;
+  userRole: string;
+}
+
+// Define the return type of useListSchool hook
+interface UseListSchoolResponse {
+  data: {
+    message: string;
+    data: School[]; // List of schools
+  };
+  isLoading: boolean;
+  isError: boolean;
+}
 
 const SchoolList: React.FC = () => {
+  // Type the hook's response
+  const { data: apiResponse, isLoading, isError } = useListSchool() as UseListSchoolResponse;
+
+  // Extract the schools data
+  const schoolList = apiResponse?.data ?? [];
+
+  console.log("School List Data:", schoolList);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error fetching data</div>;
+  }
+
+  if (!Array.isArray(schoolList)) {
+    return <div>Error: Invalid data format</div>;
+  }
+
   return (
     <div className="bg-gradient-to-b from-gray-100 to-gray-200 min-h-screen py-10 px-6">
       <h1 className="text-4xl font-extrabold text-center text-gray-800 mb-10">
@@ -51,32 +59,36 @@ const SchoolList: React.FC = () => {
         </Link>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {schools.map((school) => (
+        {schoolList.map((school) => (
           <div
             key={school.id}
             className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-transform transform hover:scale-105"
           >
             <img
-              src={school.image}
-              alt={school.name}
+              src="https://img.freepik.com/free-vector/vector-cartoon-illustration-school-building-green-lawn-road-trees-educalion-l_134830-1588.jpg"
+              alt={school.fullName}
               className="w-full h-48 object-cover"
             />
             <div className="p-6">
               <h2 className="text-2xl font-bold text-gray-800 mb-4">
-                {school.name}
+                {school.fullName}
               </h2>
               <div className="text-gray-600 space-y-2">
                 <div className="flex items-center gap-2">
-                  <FaMapMarkerAlt className="text-gray-800" />
-                  <span>{school.location}</span>
+                  <FaUserTie className="text-gray-800" />
+                  <span>{school.userRole}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <FaUserTie className="text-gray-800" />
-                  <span>{school.chairman}</span>
+                  <FaMapMarkerAlt className="text-gray-800" />
+                  <span>Tenant ID: {school.tenantId}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <FaUsers className="text-gray-800" />
-                  <span>{school.students} Students</span>
+                  <span>Email: {school.email}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <FaUsers className="text-gray-800" />
+                  <span>Phone: {school.phoneNumber || "N/A"}</span>
                 </div>
               </div>
               <div className="mt-6">
