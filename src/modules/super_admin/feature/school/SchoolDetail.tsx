@@ -16,7 +16,7 @@ const SchoolDetail: React.FC = () => {
     queryFn: () => SchoolStudentListApi(Number(schoolId)),
     enabled: !!schoolId, // Fetch only when schoolId is available
   });
-// console.log("students",students)
+console.log("students",students?.data)
 
   // Fetch Teachers Data
   // const {
@@ -102,7 +102,7 @@ const SchoolDetail: React.FC = () => {
           ) : studentsError ? (
             <p>Error fetching data. Please try again later.</p>
           ) : (
-            <Tabs students={students} teachers={""}/>
+            <Tabs students={students?.data} teachers={[]}/>
           )}
         </div>
       </div>
