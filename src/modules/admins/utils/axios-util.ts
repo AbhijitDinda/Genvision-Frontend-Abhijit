@@ -4,9 +4,11 @@ export const getBaseURL = () => {
   const { hostname } = window.location;
   const subdomain = hostname.split(".")[0];
 
-  const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
+  const protocol = process.env.VITE_NODE_ENV === "production" ? "https" : "http";
   const domain =
-    process.env.NODE_ENV === "production" ? process.env.DOMAIN : "localhost:3000";
+    process.env.VITE_NODE_ENV === "production"
+      ? process.env.VITE_DOMAIN
+      : "localhost:3000";
   return `${protocol}://${subdomain}.${domain}/api`;
 };
 
