@@ -6,7 +6,7 @@ export const getBaseURL = () => {
 
   const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
   const domain =
-    process.env.NODE_ENV === "production" ? null : "localhost:3000";
+    process.env.NODE_ENV === "production" ? process.env.DOMAIN : "localhost:3000";
   return `${protocol}://${subdomain}.${domain}/api`;
 };
 
