@@ -8,9 +8,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  PieChart,
-  Pie,
-  Label,
   BarChart,
   Bar,
   LabelList,
@@ -29,61 +26,61 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { TrendingDown, TrendingUp } from "lucide-react";
-import { useAIPrompt, usePerformance } from "../store/hooks";
+import { TrendingUp } from "lucide-react";
+import { usePerformance } from "../store/hooks";
 
-const lineChartData = [
-  { month: "January", attendanceCount: 186 },
-  { month: "February", attendanceCount: 305 },
-  { month: "March", attendanceCount: 237 },
-  { month: "April", attendanceCount: 73 },
-  { month: "May", attendanceCount: 209 },
-  { month: "June", attendanceCount: 214 },
-];
-const lineChartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "hsl(var(--chart-1))",
-  },
-  mobile: {
-    label: "Mobile",
-    color: "hsl(var(--chart-2))",
-  },
-} satisfies ChartConfig;
+// const lineChartData = [
+//   { month: "January", attendanceCount: 186 },
+//   { month: "February", attendanceCount: 305 },
+//   { month: "March", attendanceCount: 237 },
+//   { month: "April", attendanceCount: 73 },
+//   { month: "May", attendanceCount: 209 },
+//   { month: "June", attendanceCount: 214 },
+// ];
+// const lineChartConfig = {
+//   desktop: {
+//     label: "Desktop",
+//     color: "hsl(var(--chart-1))",
+//   },
+//   mobile: {
+//     label: "Mobile",
+//     color: "hsl(var(--chart-2))",
+//   },
+// } satisfies ChartConfig;
 
-const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 190, fill: "var(--color-other)" },
-];
+// const chartData = [
+//   { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
+//   { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
+//   { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
+//   { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
+//   { browser: "other", visitors: 190, fill: "var(--color-other)" },
+// ];
 
-const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
-  chrome: {
-    label: "Chrome",
-    color: "hsl(var(--chart-1))",
-  },
-  safari: {
-    label: "Safari",
-    color: "hsl(var(--chart-2))",
-  },
-  firefox: {
-    label: "Firefox",
-    color: "hsl(var(--chart-3))",
-  },
-  edge: {
-    label: "Edge",
-    color: "hsl(var(--chart-4))",
-  },
-  other: {
-    label: "Other",
-    color: "hsl(var(--chart-5))",
-  },
-} satisfies ChartConfig;
+// const chartConfig = {
+//   visitors: {
+//     label: "Visitors",
+//   },
+//   chrome: {
+//     label: "Chrome",
+//     color: "hsl(var(--chart-1))",
+//   },
+//   safari: {
+//     label: "Safari",
+//     color: "hsl(var(--chart-2))",
+//   },
+//   firefox: {
+//     label: "Firefox",
+//     color: "hsl(var(--chart-3))",
+//   },
+//   edge: {
+//     label: "Edge",
+//     color: "hsl(var(--chart-4))",
+//   },
+//   other: {
+//     label: "Other",
+//     color: "hsl(var(--chart-5))",
+//   },
+// } satisfies ChartConfig;
 
 const barChartConfig = {
   desktop: {
@@ -92,20 +89,24 @@ const barChartConfig = {
   },
 } satisfies ChartConfig;
 
-const barChartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-];
+// const barChartData = [
+//   { month: "January", desktop: 186 },
+//   { month: "February", desktop: 305 },
+//   { month: "March", desktop: 237 },
+//   { month: "April", desktop: 73 },
+//   { month: "May", desktop: 209 },
+//   { month: "June", desktop: 214 },
+// ];
+
+interface PerformanceProps {
+  studentId: string;
+}
 
 // Performance Component
-const Performance: FC = ({ studentId }) => {
-  const totalVisitors = useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.visitors, 0);
-  }, []);
+const Performance: FC<PerformanceProps> = ({ studentId }) => {
+  // const totalVisitors = useMemo(() => {
+  //   return chartData.reduce((acc, curr) => acc + curr.visitors, 0);
+  // }, []);
 
   const { data: PERFORMANCE_DATA } = usePerformance(studentId);
 

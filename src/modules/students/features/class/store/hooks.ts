@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { AttendanceList, ClassmatesList, ClassTeachersList, MarksList, TeacherList } from "./api";
+import { AttendanceList, ClassmatesList, MarksList, TeacherList } from "./api";
 
 export const useListAttendance = () => {
   return useQuery({

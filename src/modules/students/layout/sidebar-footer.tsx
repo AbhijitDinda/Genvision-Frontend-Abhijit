@@ -2,7 +2,6 @@
 
 import { BadgeCheck, Bell, ChevronsUpDown, LogOut } from "lucide-react";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,17 +18,30 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { jwtDecode } from "jwt-decode";
 import { removeCredentials } from "@/modules/authentication/store/slice";
+
+interface User {
+  fullName: string;
+}
+
+interface Token {
+  accessToken: string;
+  refreshToken: string;
+}
 
 export function NavUser() {
   const { isMobile } = useSidebar();
 
   const navigate = useNavigate();
 
-  const parsedToken: any = JSON.parse(localStorage.getItem("tokens"));
-  const user = jwtDecode(parsedToken.accessToken);
+  const tokenString = localStorage.getItem("tokens");
+  const parsedToken: Token | null = tokenString
+    ? JSON.parse(tokenString)
+    : null;
+    // @ts-ignore
+  const user: User = jwtDecode(parsedToken?.accessToken);
 
   const dispatch = useDispatch();
 

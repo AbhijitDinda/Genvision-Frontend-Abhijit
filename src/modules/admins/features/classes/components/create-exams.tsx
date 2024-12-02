@@ -103,7 +103,7 @@ const CreateExam: React.FC<CreateEditExamProps> = ({
   modalAction,
   examId,
   examDetails,
-}) => {
+}: any) => {
   const { data: classes, isLoading: isClassLoading } = useListClass({
     page: 1,
     size: 10,
@@ -141,10 +141,7 @@ const CreateExam: React.FC<CreateEditExamProps> = ({
     setFieldValue,
     handleChange,
     handleBlur,
-    handleSubmit,
-    isValid,
     validateForm,
-    resetForm,
     setValues,
   } = useFormik({
     initialValues: {
@@ -155,7 +152,7 @@ const CreateExam: React.FC<CreateEditExamProps> = ({
       subjects: [],
     },
     validationSchema: ExamValidationSchema,
-    onSubmit: (values) => {
+    onSubmit: () => {
       handleSave(false);
     },
   });
@@ -201,6 +198,7 @@ const CreateExam: React.FC<CreateEditExamProps> = ({
     if (isCreateExamError) {
       toast({
         variant: "destructive",
+        // @ts-ignore
         title: createExamError.response?.data.message,
         description: "Try Again",
       });
@@ -218,6 +216,7 @@ const CreateExam: React.FC<CreateEditExamProps> = ({
     if (isUpdateExamError) {
       toast({
         variant: "destructive",
+        // @ts-ignore
         title: updateExamError.response?.data.message,
         description: "Try Again",
       });
@@ -331,7 +330,8 @@ const CreateExam: React.FC<CreateEditExamProps> = ({
         variant: "destructive",
         title: "Validation Error",
         description: formErrors.subjects
-          ? formErrors?.subjects.map((item) => Object.values(item)[0])
+        // @ts-ignore
+          ? formErrors?.subjects.map((item: any) => Object.values(item)[0])
           : "Please check the form and fill all required fields correctly.",
       });
     }

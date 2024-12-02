@@ -16,7 +16,7 @@ import { Badge } from "@/components/ui/badge";
 const ExamListComponent = ({ examItem }: any) => {
   const [isEditExamModalOpen, setIsEditExamModalOpen] = useState(false);
 
-  const [examDetails, setExamDetails] = useState(null);
+  const [examDetails, setExamDetails] = useState<any>(null);
 
   const handleEditModal = (data: any) => {
     setExamDetails(data);
@@ -33,7 +33,7 @@ const ExamListComponent = ({ examItem }: any) => {
           </TableCell>
           <TableCell className="hidden md:table-cell">{item.endDate}</TableCell>
           <TableCell className="hidden md:table-cell">
-            {item.subjectDetails.map((item) => (
+            {item.subjectDetails.map((item: any) => (
               <Badge className="rounded-full m-1">{item.subjectName}</Badge>
             ))}
           </TableCell>
@@ -59,12 +59,12 @@ const ExamListComponent = ({ examItem }: any) => {
         </TableRow>
       ))}
       <Dialog open={isEditExamModalOpen} onOpenChange={setIsEditExamModalOpen}>
-        {(isEditExamModalOpen && examDetails) && (
+        {isEditExamModalOpen && examDetails && (
           <DialogContent className="max-w-[60%] max-h-[90%] overflow-y-scroll hide-scrollbar">
             <CreateExam
               modalAction={setIsEditExamModalOpen}
               examDetails={examDetails}
-              examId={examDetails.id}
+              examId={examDetails?.id}
             />
           </DialogContent>
         )}

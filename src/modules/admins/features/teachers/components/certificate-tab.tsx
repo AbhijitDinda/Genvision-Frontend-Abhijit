@@ -1,7 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus, Pencil, ImageDown, Trash2 } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
 import {
   Dialog,
   DialogContent,
@@ -202,12 +201,10 @@ export const CertificateTab: FC = () => {
             </Dialog>
 
             {CERTIFICATES?.data && CERTIFICATES?.data.length > 0 ? (
-              CERTIFICATES?.data.map((certificate) => (
+              CERTIFICATES?.data.map((certificate: any) => (
                 <div className="space-y-4">
                   <div>
-                    <h3 className="font-medium text-lg">
-                      {certificate.title}
-                    </h3>
+                    <h3 className="font-medium text-lg">{certificate.title}</h3>
                     {/* <p className="text-sm text-gray-600">Issued by Amazon</p> */}
                   </div>
 
@@ -221,7 +218,7 @@ export const CertificateTab: FC = () => {
                     </div>
                     <div className="flex-grow pt-2">
                       <h4 className="font-medium">
-                         {/* {certificate.link} */}
+                        {/* {certificate.link} */}
                       </h4>
                     </div>
                   </div>

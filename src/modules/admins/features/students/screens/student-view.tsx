@@ -53,9 +53,9 @@ const StudentView: FC = () => {
             <Teacher />
           </TabsContent>
 
-          <TabsContent value="performance">
-          {studentId && <Performance studentId={studentId} />}
-          </TabsContent>
+            <TabsContent value="performance">
+            {studentId && <Performance studentId={studentId} />}
+            </TabsContent>
 
           <TabsContent value="marks">
             <Marks />

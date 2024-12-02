@@ -1,6 +1,4 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { PlusCircle, Pencil } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { FC } from "react";
 import { useListTEducation } from "../store/hooks";
