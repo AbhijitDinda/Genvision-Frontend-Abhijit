@@ -89,6 +89,7 @@ export const ExamListPreview: React.FC = () => {
 
   const [isCreateExamModalOpen, setIsCreateExamModalOpen] = useState(false);
 
+
   return (
     <>
       <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 mt-3">
@@ -199,10 +200,11 @@ export const ExamListPreview: React.FC = () => {
         >
           {isCreateExamModalOpen && (
             <DialogContent className="max-w-[60%] max-h-[90%] overflow-y-scroll hide-scrollbar">
-              <CreateExam modalAction={setIsCreateExamModalOpen} />
+              <CreateExam modalAction={setIsCreateExamModalOpen}/>
             </DialogContent>
           )}
         </Dialog>
+       
         {/* API Done - Backend */}
       </main>
     </>

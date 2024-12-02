@@ -61,3 +61,10 @@ export const experienceListAPI = async (
   const response = await api.get(`/admin/teachers/${teacherId}/experiences`);
   return response.data;
 };
+
+export const certificateListAPI = async (
+  teacherId: number | string
+): Promise<any> => {
+  const response = await api.get(`/admin/teachers/${teacherId}/certifications`);
+  return response.data;
+};

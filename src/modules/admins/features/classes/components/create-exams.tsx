@@ -7,6 +7,7 @@ import {
   useCreateExam,
   useGetSubjectDataUsingClass,
   useListClass,
+  useUpdateExam,
 } from "../store/hooks";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -19,38 +20,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-
-export const CreateExamPreview = () => {
-  return (
-    <div className="p-4 bg-gray-100 min-h-screen">
-      <h1 className="text-2xl font-bold mb-4">Create Exam Preview</h1>
-      <div className="flex justify-center">
-        <CreateExam modalAction={"anything"} />
-      </div>
-    </div>
-  );
-};
-
-// const ClassCard = ({ className, selected, onClick }: any) => (
-//   <button
-//     type="button"
-//     onClick={onClick}
-//     className={`relative p-4 rounded-lg border-2 transition-all duration-200 hover:shadow-md 
-//       ${
-//         selected
-//           ? "border-blue-500 bg-blue-50"
-//           : "border-gray-200 hover:border-blue-200"
-//       }`}
-//   >
-//     <div className="text-sm font-medium">{className}</div>
-//     {selected && (
-//       <div className="absolute top-2 right-2 text-blue-500">
-//         <Check className="w-4 h-4" />
-//       </div>
-//     )}
-//   </button>
-// );
-
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
@@ -61,47 +30,86 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useFormik } from "formik";
+import * as Yup from "yup";
 import { toast } from "@/hooks/use-toast";
 
-// const ClassCardSkeleton = () => (
-//   <div className="relative p-4 rounded-lg border-2 border-gray-200 bg-gray-50 transition-all duration-200 hover:shadow-md">
-//     <Skeleton className="h-4 w-3/4 mb-2" />
-//     <Skeleton className="absolute top-2 right-2 h-4 w-4 rounded-full" />
-//   </div>
-// );
+// Validation Schema
+const ExamValidationSchema = Yup.object().shape({
+  name: Yup.string()
+    .trim()
+    .required("Exam name is required")
+    .min(3, "Exam name must be at least 3 characters")
+    .max(50, "Exam name cannot exceed 50 characters"),
 
-// const classesData = [
-//   { id: 1, name: "Class 10" },
-//   { id: 2, name: "Class 11" },
-//   { id: 3, name: "Class 12" },
-// ];
+  classId: Yup.string().required("Class selection is required"),
 
-// interface Subject {
-//   name: string;
-//   dueDate: string;
-//   startTime: string;
-//   endTime: string;
-// }
+  startDate: Yup.date()
+    .required("Start date is required")
+    .max(Yup.ref("endDate"), "Start date must be before or equal to end date"),
 
-// interface ClassSchedule {
-//   name: string;
-//   subjects: Subject[];
-// }
+  endDate: Yup.date()
+    .required("End date is required")
+    .min(Yup.ref("startDate"), "End date must be after or equal to start date"),
 
-const CreateExam = ({ modalAction }: any) => {
-  const {
-    data: classes,
-  } = useListClass({ page: 1, size: 10, sortBy: "id", sortOrder: "ASC" });
+  subjects: Yup.array()
+    .of(
+      Yup.object().shape({
+        subjectId: Yup.number().required("Subject ID is required"),
 
-  // const [selectedClasses, setSelectedClasses] = useState<any>([]);
+        maxScore: Yup.number()
+          .required("Maximum score is required")
+          .positive("Maximum score must be a positive number")
+          .max(100, "Maximum score cannot exceed 100"),
 
-  // const toggleClass = (className: any) => {
-  //   setSelectedClasses((prev: any) =>
-  //     prev.includes(className.id)
-  //       ? prev.filter((id: any) => id !== className.id)
-  //       : [...prev, className.id]
-  //   );
-  // };
+        examDate: Yup.date().required("Exam date is required"),
+
+        startTime: Yup.string()
+          .required("Start time is required")
+          .matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid time format"),
+
+        endTime: Yup.string()
+          .required("End time is required")
+          .matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid time format")
+          .test(
+            "is-after-start-time",
+            "End time must be after start time",
+            function (endTime) {
+              const { startTime } = this.parent;
+              return startTime < endTime;
+            }
+          ),
+      })
+    )
+    .min(1, "At least one subject must be added"),
+});
+
+const formatTo24Hour = (time: string): string => {
+  const [hour, minute] = time.split(":").map(Number);
+
+  // Return the formatted time in HH:mm
+  const formattedHour = hour.toString().padStart(2, "0");
+  const formattedMinute = minute.toString().padStart(2, "0");
+
+  return `${formattedHour}:${formattedMinute}`;
+};
+
+interface CreateEditExamProps {
+  modalAction: (show: boolean) => void;
+  examId?: number;
+  examDetails?: object;
+}
+
+const CreateExam: React.FC<CreateEditExamProps> = ({
+  modalAction,
+  examId,
+  examDetails,
+}) => {
+  const { data: classes, isLoading: isClassLoading } = useListClass({
+    page: 1,
+    size: 10,
+    sortBy: "id",
+    sortOrder: "ASC",
+  });
 
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isPublishModalOpen, setIsPublishModalOpen] = useState(false);
@@ -118,25 +126,69 @@ const CreateExam = ({ modalAction }: any) => {
     error: createExamError,
   } = useCreateExam();
 
-  const { values, setFieldValue, handleChange } =
-    useFormik({
-      initialValues: {
-        name: "",
-        classId: "",
-        endDate: "",
-        startDate: "",
-        subjects: [],
-      },
-      onSubmit: (values) => {
-        console.log("Form submitted:", values);
-      },
-    });
+  const {
+    mutate: updateExamMutate,
+    isPending: isUpdateExamPending,
+    isError: isUpdateExamError,
+    isSuccess: isUpdateExamSuccess,
+    error: updateExamError,
+  } = useUpdateExam();
+
+  const {
+    values,
+    errors,
+    touched,
+    setFieldValue,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    isValid,
+    validateForm,
+    resetForm,
+    setValues,
+  } = useFormik({
+    initialValues: {
+      name: "",
+      classId: "",
+      endDate: "",
+      startDate: "",
+      subjects: [],
+    },
+    validationSchema: ExamValidationSchema,
+    onSubmit: (values) => {
+      handleSave(false);
+    },
+  });
 
   const {
     data: subjectsData,
     isPending: isSubjectsLoading,
     refetch: refetchSubjects,
   } = useGetSubjectDataUsingClass(values.classId);
+
+  console.log(examDetails, "log");
+
+  useEffect(() => {
+    if (examId && examDetails) {
+      const transformedDetails = {
+        name: examDetails.name,
+        classId: examDetails.classId.toString(),
+        startDate: examDetails.startDate,
+        endDate: examDetails.endDate,
+        subjects: examDetails.subjects.map((subject: any) => ({
+          subjectId: subject.subjectId,
+          maxScore: subject.maxScore,
+          examDate: new Date(subject.examDate).toISOString().split("T")[0],
+          startTime: formatTo24Hour(subject.startTime),
+          endTime: formatTo24Hour(subject.endTime),
+        })),
+      };
+
+      // Set form values
+      setValues(transformedDetails);
+      console.log(transformedDetails);
+    }
+  }, [examId, examDetails, setValues]);
 
   useEffect(() => {
     if (values.classId) {
@@ -145,10 +197,10 @@ const CreateExam = ({ modalAction }: any) => {
   }, [values.classId, refetchSubjects]);
 
   useEffect(() => {
+    // Handle create exam success/error
     if (isCreateExamError) {
       toast({
         variant: "destructive",
-        // @ts-ignore
         title: createExamError.response?.data.message,
         description: "Try Again",
       });
@@ -161,7 +213,30 @@ const CreateExam = ({ modalAction }: any) => {
         title: `Exam created Successfully.`,
       });
     }
-  }, [isCreateExamSuccess, isCreateExamError]);
+
+    // Handle update exam success/error
+    if (isUpdateExamError) {
+      toast({
+        variant: "destructive",
+        title: updateExamError.response?.data.message,
+        description: "Try Again",
+      });
+    }
+
+    if (isUpdateExamSuccess) {
+      modalAction(false);
+      toast({
+        variant: "success",
+        title: `Exam updated Successfully.`,
+      });
+    }
+  }, [
+    isCreateExamSuccess,
+    isCreateExamError,
+    isUpdateExamSuccess,
+    isUpdateExamError,
+    modalAction,
+  ]);
 
   const handleClassChangeAttempt = (value: string) => {
     if (values.subjects.length > 0) {
@@ -204,6 +279,7 @@ const CreateExam = ({ modalAction }: any) => {
         ...existingSchedule,
         {
           subjectId,
+          maxScore: "",
           examDate: "",
           startTime: "",
           endTime: "",
@@ -212,10 +288,10 @@ const CreateExam = ({ modalAction }: any) => {
     }
   };
 
-  const getSubjectName = (subjectId:any) => {
+  const getSubjectName = (subjectId: any) => {
     if (!subjectsData?.data) return "Subject not found";
     const subject = subjectsData.data.find(
-      (subject:any) => subject.id === subjectId
+      (subject: any) => subject.id === subjectId
     );
     return subject ? subject.name : "Subject not found";
   };
@@ -227,58 +303,101 @@ const CreateExam = ({ modalAction }: any) => {
     setFieldValue("subjects", updatedSchedule);
   };
 
-  const handleSave = (publish: boolean) => {
-    const formData = {
-      ...values,
-      isPublished: publish,
-    };
+  const handleSave = async (publish: boolean) => {
+    const formErrors = await validateForm();
 
-    if (publish) {
-      setExamValues(formData);
-      setIsPublishModalOpen(true);
+    console.log(formErrors, "ooo");
+
+    if (Object.keys(formErrors).length === 0) {
+      const formData = {
+        ...values,
+        isPublished: publish,
+      };
+
+      if (publish) {
+        setExamValues(formData);
+        setIsPublishModalOpen(true);
+      } else {
+        // Determine whether to create or update based on examId
+        if (examId) {
+          updateExamMutate([examId, formData]);
+        } else {
+          createExamMutate(formData);
+        }
+      }
     } else {
-      createExamMutate(formData);
+      // Show validation error toast
+      toast({
+        variant: "destructive",
+        title: "Validation Error",
+        description: formErrors.subjects
+          ? formErrors?.subjects.map((item) => Object.values(item)[0])
+          : "Please check the form and fill all required fields correctly.",
+      });
     }
   };
 
   const handlePublishConfirm = () => {
     if (examValues) {
-      createExamMutate(examValues);
+      if (examId) {
+        updateExamMutate([examId, { ...examValues, isPublished: true }]);
+      } else {
+        createExamMutate(examValues);
+      }
       setIsPublishModalOpen(false);
       setExamValues(null);
     }
   };
 
+  const isPending = isCreateExamPending || isUpdateExamPending;
+
+  if (examId && isClassLoading) {
+    return <p>wE ARE INTITALIZING YOUR FORM</p>;
+  }
+
   return (
     <>
-      {isCreateExamPending && (
+      {isPending && (
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-lg z-50">
           <Loader2 className="h-8 w-8 animate-spin text-white" />
         </div>
       )}
+
       <form className="space-y-6">
+        {/* Exam Name Input */}
         <div className="space-y-2">
           <Label htmlFor="examName">Exam Name</Label>
           <Input
             id="name"
             value={values.name}
             onChange={handleChange}
+            onBlur={handleBlur}
             placeholder="Enter exam name"
-            className="w-full"
+            className={`w-full ${
+              touched.name && errors.name ? "border-red-500" : ""
+            }`}
           />
+          {touched.name && errors.name && (
+            <p className="text-red-500 text-sm">{errors.name}</p>
+          )}
         </div>
 
         <div className="space-y-2 flex">
           <div className="space-y-2 flex-1 p-1">
             <Label htmlFor="startDate">Start Date</Label>
             <Input
-              value={values.startDate}
               id="startDate"
+              value={values.startDate}
               onChange={handleChange}
-              placeholder="Start Date"
+              onBlur={handleBlur}
               type="date"
-              className="w-full"
+              className={`w-full ${
+                touched.startDate && errors.startDate ? "border-red-500" : ""
+              }`}
             />
+            {touched.startDate && errors.startDate && (
+              <p className="text-red-500 text-sm">{errors.startDate}</p>
+            )}
           </div>
 
           <div className="flex-1 p-1">
@@ -287,10 +406,15 @@ const CreateExam = ({ modalAction }: any) => {
               id="endDate"
               value={values.endDate}
               onChange={handleChange}
-              placeholder="End Date"
+              onBlur={handleBlur}
               type="date"
-              className="w-full"
+              className={`w-full ${
+                touched.endDate && errors.endDate ? "border-red-500" : ""
+              }`}
             />
+            {touched.endDate && errors.endDate && (
+              <p className="text-red-500 text-sm">{errors.endDate}</p>
+            )}
           </div>
         </div>
         <div className="space-y-2">
@@ -298,12 +422,13 @@ const CreateExam = ({ modalAction }: any) => {
           <Select
             onValueChange={handleClassChangeAttempt}
             value={values.classId}
+            defaultValue={values.classId}
           >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select a class" />
             </SelectTrigger>
             <SelectContent>
-              {classes?.data.map((classItem:any) => (
+              {classes?.data.map((classItem: any) => (
                 <SelectItem key={classItem.id} value={classItem.id.toString()}>
                   {classItem.name + " " + classItem?.section}
                 </SelectItem>
@@ -448,23 +573,44 @@ const CreateExam = ({ modalAction }: any) => {
         )}
 
         <div className="flex">
-          <Button
-            type="button"
-            onClick={() => handleSave(false)}
-            disabled={(classes?.data && subjectsData ) && subjectsData?.data.length === 0}
-            className="w-full flex-1 mx-2"
-          >
-            Save Exam
-          </Button>
-          <Button
-            type="button"
-            onClick={() => handleSave(true)}
-            disabled={(classes?.data && subjectsData ) && subjectsData?.data.length === 0}
-            className="w-full flex-1 mx-2"
-          >
-            Save Exam & Publish
-          </Button>
-        </div>  
+          {examId ? (
+            <Button
+              type="button"
+              onClick={() => handleSave(true)}
+              disabled={examDetails?.isPublished}
+              className="w-full flex-1 mx-2"
+            >
+              Publish
+            </Button>
+          ) : (
+            <>
+              <Button
+                type="button"
+                onClick={() => handleSave(false)}
+                disabled={
+                  classes?.data &&
+                  subjectsData &&
+                  subjectsData?.data.length === 0
+                }
+                className="w-full flex-1 mx-2"
+              >
+                Save Exam
+              </Button>
+              <Button
+                type="button"
+                onClick={() => handleSave(true)}
+                disabled={
+                  classes?.data &&
+                  subjectsData &&
+                  subjectsData?.data.length === 0
+                }
+                className="w-full flex-1 mx-2"
+              >
+                Save Exam & Publish
+              </Button>
+            </>
+          )}
+        </div>
       </form>
       <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
         <AlertDialogContent>

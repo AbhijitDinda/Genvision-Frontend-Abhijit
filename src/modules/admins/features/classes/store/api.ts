@@ -110,6 +110,11 @@ export const ExamCreateAPI = async (data: any) => {
   return response.data;
 };
 
+export const ExamUpdateAPI = async ( id:number | string,data: any) => {
+  const response = await api.put(`/admin/exams/${id}`, data);
+  return response.data;
+};
+
 export const ExamListAPI = async (params: { studentId?: number }) => {
   const response = await api.get("/admin/exams", { params });
   return response.data;

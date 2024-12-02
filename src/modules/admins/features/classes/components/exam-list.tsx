@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,12 +9,23 @@ import {
 import { TableCell, TableRow } from "@/components/ui/table";
 import { DropdownMenuLabel } from "@radix-ui/react-dropdown-menu";
 import { MoreHorizontal, Pencil } from "lucide-react";
+import CreateExam from "./create-exams";
+import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
 
-const ExamListComponent = ({ examItem }:any) => {
-  console.log(examItem, "thousi");
+const ExamListComponent = ({ examItem }: any) => {
+  const [isEditExamModalOpen, setIsEditExamModalOpen] = useState(false);
+
+  const [examDetails, setExamDetails] = useState(null);
+
+  const handleEditModal = (data: any) => {
+    setExamDetails(data);
+    setIsEditExamModalOpen(true);
+  };
+
   return (
     <>
-      {examItem.map((item:any) => (
+      {examItem.map((item: any) => (
         <TableRow key={item.id}>
           <TableCell className="font-medium">{item.name}</TableCell>
           <TableCell className="hidden md:table-cell">
@@ -21,7 +33,9 @@ const ExamListComponent = ({ examItem }:any) => {
           </TableCell>
           <TableCell className="hidden md:table-cell">{item.endDate}</TableCell>
           <TableCell className="hidden md:table-cell">
-            {item.teacherCount}
+            {item.subjectDetails.map((item) => (
+              <Badge className="rounded-full m-1">{item.subjectName}</Badge>
+            ))}
           </TableCell>
           <TableCell>
             <DropdownMenu>
@@ -33,7 +47,7 @@ const ExamListComponent = ({ examItem }:any) => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleEditModal(item)}>
                   <Pencil className="mr-2 h-4 w-4" /> Exam
                 </DropdownMenuItem>
                 <DropdownMenuItem className="text-red-500 focus:bg-red-600">
@@ -44,6 +58,17 @@ const ExamListComponent = ({ examItem }:any) => {
           </TableCell>
         </TableRow>
       ))}
+      <Dialog open={isEditExamModalOpen} onOpenChange={setIsEditExamModalOpen}>
+        {(isEditExamModalOpen && examDetails) && (
+          <DialogContent className="max-w-[60%] max-h-[90%] overflow-y-scroll hide-scrollbar">
+            <CreateExam
+              modalAction={setIsEditExamModalOpen}
+              examDetails={examDetails}
+              examId={examDetails.id}
+            />
+          </DialogContent>
+        )}
+      </Dialog>
     </>
   );
 };

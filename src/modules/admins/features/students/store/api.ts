@@ -256,22 +256,37 @@ export const documentDeleteAPI = async (studentId: id, id: id) => {
   return response.data;
 };
 
-export const MarkListAPI = async (id:any) => {
+export const MarkListAPI = async (id: any) => {
   const response = await api.get(`/admin/students/${id}/marks`);
   return response.data;
 };
 
-export const MarkCreateAPI = async (id:any, data:any) => {
+export const MarkCreateAPI = async (id: any, data: any) => {
   const response = await api.post(`/admin/students/${id}/marks`, data);
   return response.data;
 };
 
-export const InterestListAPI = async (id:any) => {
+export const InterestListAPI = async (id: any) => {
   const response = await api.get(`/admin/students/${id}/interests`);
   return response.data;
 };
 
-export const AIPromptAPI = async (id:any) => {
+export const GoalListAPI = async (id: any) => {
+  const response = await api.get(`/admin/students/${id}/goals`);
+  return response.data;
+};
+
+export const VolunteerListAPI = async (id: any) => {
+  const response = await api.get(`/admin/students/${id}/volunteers`);
+  return response.data;
+};
+
+export const AIPromptAPI = async (id: any) => {
   const response = await api.get(`/admin/students/${id}/ai`);
+  return response.data;
+};
+
+export const PerformanceAPI = async (id: any) => {
+  const response = await api.get(`/admin/students/${id}/performances`);
   return response.data;
 };

@@ -196,7 +196,7 @@ export const OverviewTab: FC = () => {
                   </table> */}
         </CardContent>
       </Card>
-
+{/* 
       <Card className="col-span-2">
         <CardHeader>
           <CardTitle>Activity</CardTitle>
@@ -223,7 +223,7 @@ export const OverviewTab: FC = () => {
             View all
           </Button>
         </CardContent>
-      </Card>
+      </Card> */}
 
       {/* <Card className="col-span-1">
                 <CardHeader>

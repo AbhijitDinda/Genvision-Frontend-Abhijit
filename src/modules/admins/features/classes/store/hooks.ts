@@ -15,6 +15,7 @@ import {
   DeleteTeachersFromClassAPI,
   ExamCreateAPI,
   ExamListAPI,
+  ExamUpdateAPI,
   GetStudentsFromClassAPI,
   GetSubjectDataUsingClass,
   GetSubjectsFromClassAPI,
@@ -196,6 +197,18 @@ export const useCreateExam = () => {
   const queryClient = useQueryClient();
   return useMutation<any, AxiosError, any>({
     mutationFn: (data) => ExamCreateAPI(data),
+    retry: false,
+    onSuccess: () => {
+      // @ts-ignore
+      queryClient.invalidateQueries(["admin", "class", "exams"]);
+    },
+  });
+};
+
+export const useUpdateExam = () => {
+  const queryClient = useQueryClient();
+  return useMutation<any, AxiosError, any>({
+    mutationFn: ([id,data]) => ExamUpdateAPI(id,data),
     retry: false,
     onSuccess: () => {
       // @ts-ignore

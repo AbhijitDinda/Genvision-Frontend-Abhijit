@@ -81,26 +81,36 @@ const ClassmatesList = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Email</TableHead>
+                <TableHead>Profile</TableHead>
+                    <TableHead>Full Name</TableHead>
+                    <TableHead>Username</TableHead>
+                    <TableHead>dateOfBirth</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {data?.data.map((classmate:any) => (
-                  <TableRow key={classmate.id}>
-                    <TableCell>
-                      <Avatar>
-                        <AvatarImage
-                          src={classmate.profilePicture}
-                          alt={classmate.accounts.fullName}
-                        />
-                        <AvatarFallback>
-                          {classmate.accounts.fullName.charAt(0)}
-                        </AvatarFallback>
-                      </Avatar>
-                    </TableCell>
-                    <TableCell>{classmate.accounts.fullName}</TableCell>
-                  </TableRow>
+                {data?.data.map((data:any) => (
+                  <TableRow key={data.id}>
+                  <Avatar>
+                    <AvatarImage
+                      src={data.profilePicture}
+                      alt={data?.accounts?.fullName}
+                    />
+                    <AvatarFallback>
+                      {data?.accounts?.firstName.charAt(0) +
+                        data?.accounts?.lastName.charAt(0)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <TableCell>{data?.accounts?.fullName}</TableCell>
+                  <TableCell>{data?.accounts?.username}</TableCell>
+                  <TableCell>{data?.accounts?.dateOfBirth}</TableCell>
+                  {/* <TableCell>{mark.maxScore}</TableCell> */}
+                  {/* <TableCell>
+                    {((mark.marksObtained / mark.maxScore) * 100).toFixed(
+                      2
+                    )}
+                    %
+                  </TableCell> */}
+                </TableRow>
                 ))}
               </TableBody>
             </Table>

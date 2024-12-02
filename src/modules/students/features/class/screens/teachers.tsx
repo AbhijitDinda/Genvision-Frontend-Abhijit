@@ -75,13 +75,13 @@ const DetailedMarksSkeleton = () => {
   );
 };
 
-const StudentMarksDetailedDashboard = () => {
+const ClassTeachers = () => {
 
-  const { data, isLoading } = useListMarks();
+  const { data } = useListMarks();
 
   return (
     <>
-      {isLoading ? (
+      {false ? (
         <DetailedMarksSkeleton />
       ) : data?.data.length > 0 ? (
         <div className="p-4 space-y-4">
@@ -149,4 +149,4 @@ const StudentMarksDetailedDashboard = () => {
   );
 };
 
-export default StudentMarksDetailedDashboard;
+export default ClassTeachers;

@@ -24,7 +24,7 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.token = action.payload.token;
       // @ts-ignore
-      state.user = jwtDecode(action.payload.token?.accessToken);
+      state.user = jwtDecode(state.token.accessToken);
       state.error = null;
       localStorage.setItem("tokens", JSON.stringify(action.payload.token));
     },

@@ -2,10 +2,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   useSAddressListAPI,
+  useSGoalListAPI,
   useSInterestListAPI,
+  useSVolunteerListAPI,
   useViewStudents,
 } from "../store/hooks";
 import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
 
 const OverviewTabSkeleton = () => {
   return (
@@ -92,25 +95,26 @@ const OverviewTabSkeleton = () => {
 };
 
 const OverviewTab = ({ studentId }: any) => {
-  const {
-    data: STUDENT_DATA,
-    isLoading: STUDENT_DATA_LOADING,
-  } = useViewStudents(studentId);
+  const { data: STUDENT_DATA, isLoading: STUDENT_DATA_LOADING } =
+    useViewStudents(studentId);
 
   const { data: STUDENT_ADDRESSES, isLoading: STUDENT_ADDRESSES_LOADING } =
     useSAddressListAPI(studentId);
 
   const { data: INTEREST_DATA } = useSInterestListAPI(studentId);
-    
+
+  const { data: GOALS_DATA } = useSGoalListAPI(studentId);
+  const { data: VOLUNTEER_DATA } = useSVolunteerListAPI(studentId);
 
   return (
-    <div className="grid grid-cols-3 gap-4">
-      {STUDENT_DATA_LOADING && STUDENT_ADDRESSES_LOADING ? (
-        <OverviewTabSkeleton />
-      ) : (
-        <>
-          <Card className="col-span-1 relative">
-            {/* <DropdownMenu>
+    <>
+      <div className="grid grid-cols-3 gap-4 max-h-[460px] overflow-scroll hide-scrollbar">
+        {STUDENT_DATA_LOADING && STUDENT_ADDRESSES_LOADING ? (
+          <OverviewTabSkeleton />
+        ) : (
+          <>
+            <Card className="col-span-1 relative">
+              {/* <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="absolute top-2 right-2">
                   <MoreHorizontal className="w-6 h-6" />
@@ -120,136 +124,124 @@ const OverviewTab = ({ studentId }: any) => {
                 <DropdownMenuItem>Edit Information</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu> */}
-            <CardContent className="pt-6">
-              <div className="flex flex-col items-center">
-                <Avatar className="w-24 h-24 mb-4">
-                  <AvatarImage
-                    src="https://github.com/shadcn.png"
-                    alt="@shadcn"
-                  />
-                  <AvatarFallback>NS</AvatarFallback>
-                </Avatar>
-                <h2 className="text-xl font-semibold">
-                  {STUDENT_DATA?.data.fullName}
-                </h2>
-                {/* <p className="text-sm text-gray-500">d100385834</p> */}
-              </div>
-              <div className="mt-4">
-                <h2 className="text-md font-semibold">About</h2>
-                <p className="text-sm">
-                  Phone: <strong>{STUDENT_DATA?.data.phoneNumber}</strong>
-                </p>
-                <p className="text-sm">
-                  Email: <strong>{STUDENT_DATA?.data.email}</strong>
-                </p>
-              </div>
-              {STUDENT_ADDRESSES?.data.length > 0 && (
-                <div className="mt-4">
-                  <h2 className="text-md font-semibold">Address</h2>
-                  {STUDENT_ADDRESSES?.data.map((address:any) => (
-                    <>
-                      <p className="text-sm">
-                        Address: <strong>{address.streetAddress}</strong>
-                      </p>
-                      <p className="text-sm">
-                        City:{" "}
-                        <strong>
-                          {address.city}, {address.state}, {address.country}
-                        </strong>
-                      </p>
-                      <p className="text-sm">
-                        Postcode: <strong>{address.pincode}</strong>
-                      </p>
-                    </>
-                  ))}
-                  <Separator className="my-2" />
+              <CardContent className="pt-6">
+                <div className="flex flex-col items-center flex-grow-0">
+                  <Avatar className="w-24 h-24 mb-4">
+                    <AvatarImage
+                      src="https://github.com/shadcn.png"
+                      alt="@shadcn"
+                    />
+                    <AvatarFallback>NS</AvatarFallback>
+                  </Avatar>
+                  <h2 className="text-xl font-semibold">
+                    {STUDENT_DATA?.data.fullName}
+                  </h2>
+                  {/* <p className="text-sm text-gray-500">d100385834</p> */}
                 </div>
-              )}
-            </CardContent>
-          </Card>
-
-          <Card className="col-span-2">
-            <CardHeader>
-              <CardTitle>Student Information</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="font-extrabold">Interest</p>
-              <div className="grid grid-cols-2 gap-4">
-                {INTEREST_DATA?.data.map((interest:any) => (
-                  <div
-                    key={interest.id}
-                    className="flex items-center p-3 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors"
-                  >
-                    <div>
-                      <p className="font-medium">{interest.name}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <p className="font-extrabold">Goals</p>
-              <div className="space-y-6">
-                {/* {goals.map((goal) => (
-                  <div key={goal.id} className="space-y-2">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h4 className="font-medium flex items-center gap-2">
-                          {goal.title}
-                          {goal.progress === 100 && (
-                            <Trophy className="w-4 h-4 text-yellow-500" />
-                          )}
-                        </h4>
-                        <p className="text-sm text-gray-500">
-                          {goal.description}
+                <div className="mt-4">
+                  <h2 className="text-md font-semibold">About</h2>
+                  <p className="text-sm">
+                    Phone: <strong>{STUDENT_DATA?.data.phoneNumber}</strong>
+                  </p>
+                  <p className="text-sm">
+                    Email: <strong>{STUDENT_DATA?.data.email}</strong>
+                  </p>
+                </div>
+                {STUDENT_ADDRESSES?.data.length > 0 && (
+                  <div className="mt-4">
+                    <h2 className="text-md font-semibold">Address</h2>
+                    {STUDENT_ADDRESSES?.data.map((address: any) => (
+                      <>
+                        <p className="text-sm">
+                          Address: <strong>{address.streetAddress}</strong>
                         </p>
-                      </div>
-                      <Badge
-                        variant="secondary"
-                      >
-                        {goal.status}
-                      </Badge>
-                    </div>
-                    <div className="space-y-1">
-                      <Progress value={goal.progress} className="h-2" />
-                      <div className="flex justify-between text-sm text-gray-500">
-                        <span>{goal.progress}% Complete</span>
-                        <span>
-                          Due: {new Date(goal.deadline).toLocaleDateString()}
-                        </span>
-                      </div>
-                    </div>
+                        <p className="text-sm">
+                          City:{" "}
+                          <strong>
+                            {address.city}, {address.state}, {address.country}
+                          </strong>
+                        </p>
+                        <p className="text-sm">
+                          Postcode: <strong>{address.pincode}</strong>
+                        </p>
+                      </>
+                    ))}
+                    <Separator className="my-2" />
                   </div>
-                ))} */}
-              </div>
-              {/* <table className="w-full">
-                    <thead>
-                      <tr className="text-left">
-                        <th>Job title</th>
-                        <th>Department</th>
-                        <th>Manager</th>
-                        <th>Hire date</th>
-                        <th>Location</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Creative Associate</td>
-                        <td>Project Management</td>
-                        <td>Alex Foster</td>
-                        <td>May 15, 2024</td>
-                        <td>Metro DC</td>
-                      </tr>
-                      <tr>
-                        <td>Marketing Team</td>
-                        <td>Leadership</td>
-                        <td>Jana Stanner</td>
-                        <td>Sep 02, 2024</td>
-                        <td>Bergen, NJ</td>
-                      </tr>
-                    </tbody>
-                  </table> */}
-            </CardContent>
-          </Card>
-          {/* 
+                )}
+              </CardContent>
+            </Card>
+
+            {!!INTEREST_DATA?.data.length && (
+              <Card className="col-span-2">
+                <CardHeader>
+                  <CardTitle>Interest</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <>
+                    <div className="grid grid-cols-4 gap-4">
+                      {INTEREST_DATA?.data.map((interest: any) => (
+                        <Badge key={interest.id}>{interest.name}</Badge>
+                      ))}
+                    </div>
+                  </>
+                </CardContent>
+              </Card>
+            )}
+
+            {!!GOALS_DATA?.data.length && (
+              <Card className="col-span-2">
+                <CardHeader>
+                  <CardTitle>Goals</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <>
+                    <div className="grid grid-cols-2 gap-4">
+                      {GOALS_DATA?.data.map((goal: any) => (
+                        <div
+                          key={goal.id}
+                          className="flex items-center p-3 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors"
+                        >
+                          <div>
+                            <p className="font-medium">{goal.name}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                </CardContent>
+              </Card>
+            )}
+
+            {!!VOLUNTEER_DATA?.data.length && (
+              <Card className="col-span-2">
+                <CardHeader>
+                  <CardTitle>Volunteers</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <>
+                    <div className="grid grid-cols-2 gap-4">
+                      {VOLUNTEER_DATA?.data.map((volunteer: any) => (
+                        <div
+                          key={volunteer.id}
+                          className="flex items-center p-3 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors"
+                        >
+                          <div>
+                            <p className="font-extrabold">
+                              {volunteer.organisationName}
+                            </p>
+                            <p className="font-medium">{volunteer.role}</p>
+                            <p className="font-light">{volunteer.duration}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* 
           <Card className="col-span-2">
             <CardHeader>
               <CardTitle>Activity</CardTitle>
@@ -277,10 +269,10 @@ const OverviewTab = ({ studentId }: any) => {
               </Button>
             </CardContent>
           </Card> */}
-        </>
-      )}
+          </>
+        )}
 
-      {/* <Card className="col-span-1">
+        {/* <Card className="col-span-1">
                 <CardHeader>
                   <CardTitle>Compensation</CardTitle>
                 </CardHeader>
@@ -294,7 +286,8 @@ const OverviewTab = ({ studentId }: any) => {
                   </Button>
                 </CardContent>
               </Card> */}
-    </div>
+      </div>
+    </>
   );
 };
 

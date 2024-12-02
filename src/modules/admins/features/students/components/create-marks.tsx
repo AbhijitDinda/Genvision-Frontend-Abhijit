@@ -23,13 +23,15 @@ import { useSMarkCreateAPI } from "../store/hooks";
 import { Loader2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
-const ExamGradeModal = ({ modalAction, studentId }:any) => {
+const ExamGradeModal = ({ modalAction, studentId }: any) => {
   const { data: EXAMS_LIST } = useListExam({ studentId });
 
   // Helper function to get exam name by id
-  const getExamNameById = (examId:any) => {
+  const getExamNameById = (examId: any) => {
     if (!EXAMS_LIST?.data) return "";
-    const exam = EXAMS_LIST.data.find((exam:any) => exam.id === Number(examId));
+    const exam = EXAMS_LIST.data.find(
+      (exam: any) => exam.id === Number(examId)
+    );
     return exam ? exam.name : "";
   };
 
@@ -89,18 +91,18 @@ const ExamGradeModal = ({ modalAction, studentId }:any) => {
     if (!formik.values.examId || !EXAMS_LIST?.data) return [];
 
     const selectedExam = EXAMS_LIST.data.find(
-      (exam : any) => exam.id === Number(formik.values.examId)
+      (exam: any) => exam.id === Number(formik.values.examId)
     );
 
     console.log("Selected exam:", selectedExam);
 
-    if (!selectedExam?.examSubjects) {
+    if (!selectedExam?.subjects) {
       console.log("No subjects found for exam");
       return [];
     }
 
-    console.log("Exam subjects:", selectedExam.examSubjects);
-    return selectedExam.examSubjects;
+    console.log("Exam subjects:", selectedExam);
+    return selectedExam.subjectDetails;
   };
 
   // Reset subject selection when exam changes
@@ -146,7 +148,7 @@ const ExamGradeModal = ({ modalAction, studentId }:any) => {
             </SelectTrigger>
             <SelectContent>
               {EXAMS_LIST?.data?.length ? (
-                EXAMS_LIST.data.map((exam : any) => (
+                EXAMS_LIST.data.map((exam: any) => (
                   <SelectItem key={exam.id} value={String(exam.id)}>
                     {exam.name}
                   </SelectItem>
@@ -182,9 +184,9 @@ const ExamGradeModal = ({ modalAction, studentId }:any) => {
             </SelectTrigger>
             <SelectContent>
               {subjects.length > 0 ? (
-                subjects.map((subject:any) => (
+                subjects.map((subject: any) => (
                   <SelectItem key={subject.id} value={String(subject.id)}>
-                    {subject.Subject.name}
+                    {subject.subjectName}
                   </SelectItem>
                 ))
               ) : (

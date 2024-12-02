@@ -247,12 +247,8 @@ const StudentList: FC = () => {
                         <span className="sr-only">Image</span>
                       </TableHead>
                       <TableHead>Full Name</TableHead>
-                      <TableHead>Status</TableHead>
                       <TableHead className="hidden md:table-cell">
                         Grade
-                      </TableHead>
-                      <TableHead className="hidden md:table-cell">
-                        Responsibility
                       </TableHead>
                       <TableHead className="hidden md:table-cell">
                         Joined

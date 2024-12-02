@@ -18,6 +18,10 @@ import {
   XAxis,
   LineChart,
   Line,
+  YAxis,
+  Legend,
+  ResponsiveContainer,
+  Tooltip,
 } from "recharts";
 import {
   ChartConfig,
@@ -26,14 +30,15 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { TrendingDown, TrendingUp } from "lucide-react";
+import { useAIPrompt, usePerformance } from "../store/hooks";
 
 const lineChartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
+  { month: "January", attendanceCount: 186 },
+  { month: "February", attendanceCount: 305 },
+  { month: "March", attendanceCount: 237 },
+  { month: "April", attendanceCount: 73 },
+  { month: "May", attendanceCount: 209 },
+  { month: "June", attendanceCount: 214 },
 ];
 const lineChartConfig = {
   desktop: {
@@ -97,14 +102,36 @@ const barChartData = [
 ];
 
 // Performance Component
-const Performance: FC = () => {
+const Performance: FC = ({ studentId }) => {
   const totalVisitors = useMemo(() => {
     return chartData.reduce((acc, curr) => acc + curr.visitors, 0);
   }, []);
+
+  const { data: PERFORMANCE_DATA } = usePerformance(studentId);
+
+  const subjectColumns = useMemo(() => {
+    if (!PERFORMANCE_DATA?.marks || PERFORMANCE_DATA?.marks.length === 0)
+      return [];
+    return Object.keys(PERFORMANCE_DATA?.marks[0]).filter(
+      (key) => key !== "month"
+    );
+  }, [PERFORMANCE_DATA]);
+
+  const colors = [
+    "#8884d8",
+    "#82ca9d",
+    "#ffc658",
+    "#ff7300",
+    "#0088fe",
+    "#00c49f",
+    "#ff6384",
+    "#36a2eb",
+  ];
+
   return (
     <>
       <div className="grid grid-cols-3 gap-4">
-        <Card className="flex flex-col col-span-1">
+        {/* <Card className="flex flex-col col-span-1">
           <CardHeader className="items-center pb-0">
             <CardTitle>Overall Performance</CardTitle>
             <CardDescription>January - June 2024</CardDescription>
@@ -168,7 +195,7 @@ const Performance: FC = () => {
               Showing total performance for the last 6 months
             </div>
           </CardFooter>
-        </Card>
+        </Card> */}
         <Card className="col-span-2">
           <CardHeader>
             <CardTitle>Attendance Performance</CardTitle>
@@ -178,7 +205,7 @@ const Performance: FC = () => {
             <ChartContainer className="h-60 w-full" config={barChartConfig}>
               <BarChart
                 accessibilityLayer
-                data={barChartData}
+                data={PERFORMANCE_DATA?.attendances}
                 margin={{
                   top: 20,
                 }}
@@ -195,7 +222,11 @@ const Performance: FC = () => {
                   cursor={false}
                   content={<ChartTooltipContent hideLabel />}
                 />
-                <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8}>
+                <Bar
+                  dataKey="attendanceCount"
+                  fill="var(--color-desktop)"
+                  radius={8}
+                >
                   <LabelList
                     position="top"
                     offset={12}
@@ -223,43 +254,39 @@ const Performance: FC = () => {
             <CardDescription>January - June 2024</CardDescription>
           </CardHeader>
           <CardContent>
-            <ChartContainer className="h-60 w-full" config={lineChartConfig}>
+            <ResponsiveContainer width="100%" height={300}>
               <LineChart
-                accessibilityLayer
-                data={lineChartData}
+                data={PERFORMANCE_DATA?.marks}
                 margin={{
-                  left: 12,
-                  right: 12,
+                  top: 5,
+                  right: 30,
+                  left: 20,
+                  bottom: 5,
                 }}
               >
-                <CartesianGrid vertical={false} />
+                <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
                   dataKey="month"
-                  tickLine={false}
-                  axisLine={false}
-                  tickMargin={8}
                   tickFormatter={(value) => value.slice(0, 3)}
                 />
-                <ChartTooltip
-                  cursor={false}
-                  content={<ChartTooltipContent />}
+                <YAxis />
+                <Tooltip
+                  formatter={(value, name) => [value, name]}
+                  labelFormatter={(label) => `Month: ${label}`}
                 />
-                <Line
-                  dataKey="desktop"
-                  type="monotone"
-                  stroke="var(--color-desktop)"
-                  strokeWidth={2}
-                  dot={false}
-                />
-                <Line
-                  dataKey="mobile"
-                  type="monotone"
-                  stroke="var(--color-mobile)"
-                  strokeWidth={2}
-                  dot={false}
-                />
+                <Legend />
+                {subjectColumns.map((subject, index) => (
+                  <Line
+                    key={subject}
+                    type="monotone"
+                    dataKey={subject}
+                    name={subject}
+                    stroke={colors[index % colors.length]}
+                    activeDot={{ r: 8 }}
+                  />
+                ))}
               </LineChart>
-            </ChartContainer>
+            </ResponsiveContainer>
           </CardContent>
           <CardFooter>
             <div className="flex w-full items-start gap-2 text-sm">

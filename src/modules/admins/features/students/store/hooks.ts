@@ -9,14 +9,17 @@ import {
   AIPromptAPI,
   attendanceCreateAPI,
   attendanceUpdateAPI,
+  GoalListAPI,
   InterestListAPI,
   MarkCreateAPI,
   MarkListAPI,
+  PerformanceAPI,
   SAddressListAPI,
   SAttendanceListAPI,
   studentCreateAPI,
   StudentListAPI,
   studentViewAPI,
+  VolunteerListAPI,
 } from "./api";
 import { AxiosError } from "axios";
 import { AddStudentsToClassAPI } from "../../classes/store/api";
@@ -51,7 +54,7 @@ export const useCreateStudent = () => {
   });
 };
 
-export const useViewStudents = (id:any): UseQueryResult<any, Error> => {
+export const useViewStudents = (id: any): UseQueryResult<any, Error> => {
   return useQuery({
     queryKey: ["admin", "class", "student", id],
     queryFn: () => studentViewAPI(id),
@@ -59,21 +62,21 @@ export const useViewStudents = (id:any): UseQueryResult<any, Error> => {
   });
 };
 
-export const useSAddressListAPI = (id:any): UseQueryResult<any, Error> => {
+export const useSAddressListAPI = (id: any): UseQueryResult<any, Error> => {
   return useQuery({
     queryKey: ["admin", "students", "addresses"],
     queryFn: () => SAddressListAPI(id),
   });
 };
 
-export const useSAttendanceListAPI = (id:any): UseQueryResult<any, Error> => {
+export const useSAttendanceListAPI = (id: any): UseQueryResult<any, Error> => {
   return useQuery({
     queryKey: ["admin", "students", "attendances"],
     queryFn: () => SAttendanceListAPI(id),
   });
 };
 
-export const useSCreateAttendanceAPI = (id:any) => {
+export const useSCreateAttendanceAPI = (id: any) => {
   const queryClient = useQueryClient();
   return useMutation<any, AxiosError, any>({
     mutationFn: (data) => attendanceCreateAPI(id, data),
@@ -85,7 +88,7 @@ export const useSCreateAttendanceAPI = (id:any) => {
   });
 };
 
-export const useSUpdateAttendanceAPI = (studentId:any) => {
+export const useSUpdateAttendanceAPI = (studentId: any) => {
   const queryClient = useQueryClient();
   return useMutation<any, AxiosError, any>({
     mutationFn: ([id, data]) => attendanceUpdateAPI(studentId, id, data),
@@ -97,7 +100,7 @@ export const useSUpdateAttendanceAPI = (studentId:any) => {
   });
 };
 
-export const useAddStudentsToClass = (id:any) => {
+export const useAddStudentsToClass = (id: any) => {
   return useMutation<any, AxiosError, any>({
     mutationFn: (data) => AddStudentsToClassAPI(id, data),
     onSuccess: () => {
@@ -107,14 +110,14 @@ export const useAddStudentsToClass = (id:any) => {
   });
 };
 
-export const useSMarkListAPI = (id:any): UseQueryResult<any, Error> => {
+export const useSMarkListAPI = (id: any): UseQueryResult<any, Error> => {
   return useQuery({
     queryKey: ["admin", "students", "marks"],
     queryFn: () => MarkListAPI(id),
   });
 };
 
-export const useSMarkCreateAPI = (id:any) => {
+export const useSMarkCreateAPI = (id: any) => {
   const queryClient = useQueryClient();
   return useMutation<any, AxiosError, any>({
     mutationFn: (data) => MarkCreateAPI(id, data),
@@ -126,17 +129,39 @@ export const useSMarkCreateAPI = (id:any) => {
   });
 };
 
-export const useSInterestListAPI = (id : any): UseQueryResult<any, Error> => {
+export const useSInterestListAPI = (id: any): UseQueryResult<any, Error> => {
   return useQuery({
     queryKey: ["admin", "students", "interests"],
     queryFn: () => InterestListAPI(id),
   });
 };
 
-export const useAIPrompt = (id : any): UseQueryResult<any, Error> => {
+export const useSGoalListAPI = (id: any): UseQueryResult<any, Error> => {
+  return useQuery({
+    queryKey: ["admin", "students", "goals"],
+    queryFn: () => GoalListAPI(id),
+  });
+};
+
+export const useSVolunteerListAPI = (id: any): UseQueryResult<any, Error> => {
+  return useQuery({
+    queryKey: ["admin", "students", "volunteers"],
+    queryFn: () => VolunteerListAPI(id),
+  });
+};
+
+export const useAIPrompt = (id: any): UseQueryResult<any, Error> => {
   return useQuery({
     queryKey: ["admin", "students", "prompts"],
     queryFn: () => AIPromptAPI(id),
+    enabled: !!id,
+  });
+};
+
+export const usePerformance = (id: any): UseQueryResult<any, Error> => {
+  return useQuery({
+    queryKey: ["admin", "students", "performance"],
+    queryFn: () => PerformanceAPI(id),
     enabled: !!id,
   });
 };

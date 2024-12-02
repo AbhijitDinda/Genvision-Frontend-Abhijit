@@ -7,10 +7,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useListMarks } from "../store/hooks";
+import { useListClassmates } from "../store/hooks";
 import { Skeleton } from "@/components/ui/skeleton";
-
-
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const DetailedMarksSkeleton = () => {
   return (
@@ -75,9 +74,8 @@ const DetailedMarksSkeleton = () => {
   );
 };
 
-const StudentMarksDetailedDashboard = () => {
-
-  const { data, isLoading } = useListMarks();
+const Classmates = () => {
+  const { data, isLoading } = useListClassmates();
 
   return (
     <>
@@ -89,38 +87,42 @@ const StudentMarksDetailedDashboard = () => {
             <CardHeader>
               <div className="flex justify-between items-center">
                 <CardTitle>Detailed Marks Dashboard</CardTitle>
-                {/* <Select value={viewType} onValueChange={setViewType}>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="View Type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="semesters">Semesters</SelectItem>
-                    <SelectItem value="classTests">Class Tests</SelectItem>
-                  </SelectContent>
-                </Select> */}
               </div>
             </CardHeader>
             <CardContent>
               <Table className="w-full">
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Exam Name</TableHead>
-                    <TableHead>Subject Name</TableHead>
-                    <TableHead>Marks</TableHead>
-                    <TableHead>Max Marks</TableHead>
-                    <TableHead>Percentage</TableHead>
+                    <TableHead>Profile</TableHead>
+                    <TableHead>Full Name</TableHead>
+                    <TableHead>Username</TableHead>
+                    <TableHead>dateOfBirth</TableHead>
+                    {/* <TableHead>Phonenumber</TableHead> */}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {data?.data.map((mark:any) => (
-                    <TableRow key={mark.id}>
-                      <TableCell>{mark.examName}</TableCell>
-                      <TableCell>{mark.subjectName}</TableCell>
-                      <TableCell>{mark.marksObtained}</TableCell>
-                      <TableCell>{mark.maxScore}</TableCell>
-                      <TableCell>
-                        {((mark.marksObtained / mark.maxScore) * 100).toFixed(2)}%
-                      </TableCell>
+                  {data?.data.map((data: any) => (
+                    <TableRow key={data.id}>
+                      <Avatar>
+                        <AvatarImage
+                          src={data.profilePicture}
+                          alt={data?.accounts?.fullName}
+                        />
+                        <AvatarFallback>
+                          {data?.accounts?.firstName.charAt(0) +
+                            data?.accounts?.lastName.charAt(0)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <TableCell>{data?.accounts?.fullName}</TableCell>
+                      <TableCell>{data?.accounts?.username}</TableCell>
+                      <TableCell>{data?.accounts?.dateOfBirth}</TableCell>
+                      {/* <TableCell>{mark.maxScore}</TableCell> */}
+                      {/* <TableCell>
+                        {((mark.marksObtained / mark.maxScore) * 100).toFixed(
+                          2
+                        )}
+                        %
+                      </TableCell> */}
                     </TableRow>
                   ))}
                 </TableBody>
@@ -149,4 +151,4 @@ const StudentMarksDetailedDashboard = () => {
   );
 };
 
-export default StudentMarksDetailedDashboard;
+export default Classmates;

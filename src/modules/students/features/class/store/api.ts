@@ -19,3 +19,4 @@ export const MarksList = async () => {
   const response = await api.get(`/student/classes/marks`);
   return response.data;
 };
+
