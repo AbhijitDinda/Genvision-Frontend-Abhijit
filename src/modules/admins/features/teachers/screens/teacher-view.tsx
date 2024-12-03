@@ -18,15 +18,15 @@ export const TeacherView: React.FC = () => {
           <Tabs defaultValue="overview">
             <TabsList className="mb-4">
               {[
-                { value: "ai", label: "AI" },
+                // { value: "ai", label: "AI" },
                 { value: "overview", label: "Overview" },
                 { value: "experience", label: "Experience" },
                 { value: "certificates", label: "Certificates" },
                 { value: "educations", label: "Educations" },
-                { value: "salary", label: "Salary" },
-                { value: "classDetails", label: "Class Details" },
-                { value: "designation", label: "Designation" },
-                { value: "performance", label: "Performance" },
+                // { value: "salary", label: "Salary" },
+                // { value: "classDetails", label: "Class Details" },
+                // { value: "designation", label: "Designation" },
+                // { value: "performance", label: "Performance" },
                 { value: "documents", label: "Documents" },
               ].map((value, index) => (
                 <TabsTrigger key={index} value={value.value}>

@@ -14,6 +14,7 @@ import {
   teacherUpdateAPI,
   teacherViewAPI,
   experienceListAPI,
+  certificateListAPI,
 } from "./api";
 import { Teacher } from "../types";
 
@@ -109,6 +110,15 @@ export const useListTEducation = (
   return useQuery({
     queryKey: ["educations"],
     queryFn: () => educationListAPI(teacherId),
+  });
+};
+
+export const useListTCertificate = (
+  teacherId: number | string
+): UseQueryResult<any, Error> => {
+  return useQuery({
+    queryKey: ["certificates"],
+    queryFn: () => certificateListAPI(teacherId),
   });
 };
 

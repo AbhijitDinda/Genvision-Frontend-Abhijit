@@ -228,20 +228,20 @@ export const ExperienceTab: FC = () => {
                         </div>
 
                         <div className="flex-1">
-                          <h3 className="font-semibold">GHSS UDINUR</h3>
-                          <div className="text-sm text-gray-500">8 mos</div>
+                          <h3 className="font-semibold">{data.company}</h3>
+                          <div className="text-sm text-gray-500">{data.department}</div>
 
                           <div className="mt-6">
                             <h4 className="font-medium">{data.designation}</h4>
-                            <div className="text-sm text-gray-500">
+                            {/* <div className="text-sm text-gray-500">
                               Full-time
-                            </div>
+                            </div> */}
                             <div className="text-sm text-gray-500">
-                              May 2024 - Present · 6 mos
+                             {data.dateJoined}
                             </div>
-                            <div className="text-sm text-gray-500">
+                            {/* <div className="text-sm text-gray-500">
                               Mumbai, Maharashtra, India · Hybrid
-                            </div>
+                            </div> */}
                           </div>
 
                           {/* <div className="mt-6">

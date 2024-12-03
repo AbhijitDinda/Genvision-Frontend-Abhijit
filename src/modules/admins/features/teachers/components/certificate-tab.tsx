@@ -1,7 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus, Pencil, ImageDown, Trash2 } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
 import {
   Dialog,
   DialogContent,
@@ -12,6 +11,8 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { FC, useCallback, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useListTCertificate } from "../store/hooks";
 
 export const CertificateTab: FC = () => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
@@ -65,6 +66,10 @@ export const CertificateTab: FC = () => {
   const onDelete = (index: number) => {
     setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
+
+  const { id } = useParams<{ id: string }>();
+
+  const { data: CERTIFICATES } = useListTCertificate(id as string);
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   return (
@@ -195,55 +200,33 @@ export const CertificateTab: FC = () => {
               </DialogContent>
             </Dialog>
 
-            <div className="space-y-4">
-              <div>
-                <h3 className="font-medium text-lg">
-                  Amazon Junior Software Developer Professional Certificate
-                </h3>
-                <p className="text-sm text-gray-600">Issued by Amazon</p>
-              </div>
+            {CERTIFICATES?.data && CERTIFICATES?.data.length > 0 ? (
+              CERTIFICATES?.data.map((certificate: any) => (
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="font-medium text-lg">{certificate.title}</h3>
+                    {/* <p className="text-sm text-gray-600">Issued by Amazon</p> */}
+                  </div>
 
-              <div className="flex gap-4 items-start">
-                <div className="flex-shrink-0">
-                  <img
-                    src="https://media.istockphoto.com/id/1135148181/vector/certificate-template-diploma-of-modern-design-or-gift-certificate.jpg?s=1024x1024&w=is&k=20&c=4zK5ZjLdkA6r7BWy53bA8asuGPiV5p_Ak7SdfbyBpZ8="
-                    alt="Best Performer Award"
-                    className="w-20 h-20 rounded-lg object-cover"
-                  />
+                  <div className="flex gap-4 items-start">
+                    <div className="flex-shrink-0">
+                      <img
+                        src={certificate.link}
+                        alt="Best Performer Award"
+                        className="w-20 h-20 rounded-lg object-cover"
+                      />
+                    </div>
+                    <div className="flex-grow pt-2">
+                      <h4 className="font-medium">
+                        {/* {certificate.link} */}
+                      </h4>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex-grow pt-2">
-                  <h4 className="font-medium">
-                    Amazon-Junior-Software-Developer-Professional-Certificate.png
-                  </h4>
-                </div>
-              </div>
-            </div>
-
-            <Separator />
-
-            <div className="space-y-4">
-              <div>
-                <h3 className="font-medium text-lg">
-                  Amazon Senior Software Developer Professional Certificate
-                </h3>
-                <p className="text-sm text-gray-600">Issued by Amazon</p>
-              </div>
-
-              <div className="flex gap-4 items-start">
-                <div className="flex-shrink-0">
-                  <img
-                    src="https://media.istockphoto.com/id/1135148181/vector/certificate-template-diploma-of-modern-design-or-gift-certificate.jpg?s=1024x1024&w=is&k=20&c=4zK5ZjLdkA6r7BWy53bA8asuGPiV5p_Ak7SdfbyBpZ8="
-                    alt="Best Performer Award"
-                    className="w-20 h-20 rounded-lg object-cover"
-                  />
-                </div>
-                <div className="flex-grow pt-2">
-                  <h4 className="font-medium">
-                    Amazon-Senior-Software-Developer-Professional-Certificate.png
-                  </h4>
-                </div>
-              </div>
-            </div>
+              ))
+            ) : (
+              <p>No Certificates found</p>
+            )}
           </div>
         </CardContent>
       </Card>

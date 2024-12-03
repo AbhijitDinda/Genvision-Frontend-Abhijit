@@ -12,6 +12,8 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Link } from "react-router-dom";
 import { FC } from "react";
+import { useDispatch } from "react-redux";
+import { removeCredentials } from "@/modules/authentication/store/slice";
 
 interface Items {
   name: string;
@@ -45,20 +47,26 @@ const itemList: Items[] = [
     icon: <Users className="h-4 w-4" />,
     to: "/admin/students",
   },
-  {
-    name: "Parents",
-    icon: <Users className="h-4 w-4" />,
-    to: "/admin/parents",
-  },
+  // {
+  //   name: "Parents",
+  //   icon: <Users className="h-4 w-4" />,
+  //   to: "/admin/parents",
+  // },
   { name: "Class", icon: <Home className="h-4 w-4" />, to: "/admin/classes" },
   {
     name: "Exams",
     icon: <Home className="h-4 w-4" />,
-    to: "/admin/exams",
+    to: "/admin/classes/exams",
   },
 ];
 
 export const Sidebar: FC<SidebarProps> = ({ children }) => {
+  const dispatch = useDispatch();
+
+  const handleLogOut = () => {
+    dispatch(removeCredentials());
+  };
+
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-muted/40 md:block">
@@ -158,7 +166,7 @@ export const Sidebar: FC<SidebarProps> = ({ children }) => {
               <DropdownMenuItem>Settings</DropdownMenuItem>
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem onClick={handleLogOut}>Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </header>

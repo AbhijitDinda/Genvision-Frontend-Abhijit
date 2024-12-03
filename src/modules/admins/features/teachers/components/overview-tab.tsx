@@ -1,5 +1,4 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   DropdownMenu,
@@ -196,7 +195,7 @@ export const OverviewTab: FC = () => {
                   </table> */}
         </CardContent>
       </Card>
-
+{/* 
       <Card className="col-span-2">
         <CardHeader>
           <CardTitle>Activity</CardTitle>
@@ -223,7 +222,7 @@ export const OverviewTab: FC = () => {
             View all
           </Button>
         </CardContent>
-      </Card>
+      </Card> */}
 
       {/* <Card className="col-span-1">
                 <CardHeader>

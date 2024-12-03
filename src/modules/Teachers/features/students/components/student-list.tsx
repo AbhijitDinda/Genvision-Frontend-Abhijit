@@ -38,6 +38,11 @@ interface StudentListComponentProps {
 
 export const StudentListComponent: React.FC<StudentListComponentProps> = memo(
   ({ students }) => {
+    console.log(
+      students,
+      "pppppppppppppppppppppppppppppppppppppppppppppppppppppp"
+    );
+
     const navigate = useNavigate();
     return (
       <>
@@ -50,17 +55,13 @@ export const StudentListComponent: React.FC<StudentListComponentProps> = memo(
               </Avatar>
             </TableCell>
             <TableCell className="font-medium">{student.fullName}</TableCell>
-            <TableCell>
+            {/* <TableCell>
               <Badge variant="outline">{student.status}</Badge>
-            </TableCell>
+            </TableCell> */}
             <TableCell className="hidden md:table-cell">
-              {student.grade}
-            </TableCell>
-            <TableCell className="hidden md:table-cell">
-              {student.teacher}
-            </TableCell>
-            <TableCell className="hidden md:table-cell">
-              {format(student.joinedAt, "dd/MM/yyyy")}
+              {student?.studentProfile?.classDetails?.name ??
+                " " + " " + student?.studentProfile?.classDetails?.section ??
+                " "}
             </TableCell>
             <TableCell>
               <DropdownMenu>
@@ -73,12 +74,12 @@ export const StudentListComponent: React.FC<StudentListComponentProps> = memo(
                 <DropdownMenuContent align="end">
                   <DropdownMenuLabel>Actions</DropdownMenuLabel>
                   <DropdownMenuItem
-                    onClick={() => navigate("/teacher/students/1")}
+                    onClick={() => navigate(`/teacher/students/${student.id}`)}
                   >
                     View
                   </DropdownMenuItem>
                   <DropdownMenuItem>Edit</DropdownMenuItem>
-                  <DropdownMenuSub>
+                  {/* <DropdownMenuSub>
                     <DropdownMenuSubTrigger className="focus:text-white">
                       <span>Mail</span>
                     </DropdownMenuSubTrigger>
@@ -97,7 +98,7 @@ export const StudentListComponent: React.FC<StudentListComponentProps> = memo(
                         </DropdownMenuItem>
                       </DropdownMenuSubContent>
                     </DropdownMenuPortal>
-                  </DropdownMenuSub>
+                  </DropdownMenuSub> */}
                   <DropdownMenuItem className="text-red-500 focus:bg-red-600">
                     Delete
                   </DropdownMenuItem>

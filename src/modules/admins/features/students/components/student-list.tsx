@@ -1,24 +1,18 @@
 import { TableCell, TableRow } from "@/components/ui/table";
 
-import { MoreHorizontal, PlusCircle } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useNavigate } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { memo } from "react";
 
 interface Students {
@@ -27,8 +21,18 @@ interface Students {
   status: "Present" | "Absent" | "Late";
   grade: string;
   teacher: string;
-  joinedAt: string;
+  createdAt: string;
   profilePicture: string;
+  studentProfile: {
+    profilePicture: string;
+    bio: string;
+    bloodGroup: string;
+    classId: string | number;
+    classDetails: {
+      name: string;
+      section: string;
+    };
+  };
 }
 interface StudentListComponentProps {
   students: Students[];
@@ -38,7 +42,7 @@ export const StudentListComponent: React.FC<StudentListComponentProps> = memo(
   ({ students }) => {
     const navigate = useNavigate();
     console.log(students);
-    
+
     return (
       <>
         {students.map((student) => (
@@ -50,17 +54,17 @@ export const StudentListComponent: React.FC<StudentListComponentProps> = memo(
               </Avatar>
             </TableCell>
             <TableCell className="font-medium">{student.fullName}</TableCell>
-            <TableCell>
-              <Badge variant="outline">{student.status}</Badge>
+            <TableCell className="hidden md:table-cell">
+              {(student?.studentProfile?.classDetails?.name ?? "No class Assigned") +
+                " " +
+                (student?.studentProfile?.classDetails?.section ?? "")}
             </TableCell>
             <TableCell className="hidden md:table-cell">
-              {student.grade}
-            </TableCell>
-            <TableCell className="hidden md:table-cell">
-              {student.teacher}
-            </TableCell>
-            <TableCell className="hidden md:table-cell">
-              {student.joinedAt}
+              {new Date(student.createdAt).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+              })}
             </TableCell>
             <TableCell>
               <DropdownMenu>
@@ -77,8 +81,8 @@ export const StudentListComponent: React.FC<StudentListComponentProps> = memo(
                   >
                     View
                   </DropdownMenuItem>
-                  <DropdownMenuItem>Edit</DropdownMenuItem>
-                  <DropdownMenuSub>
+                  {/* <DropdownMenuItem>Edit</DropdownMenuItem> */}
+                  {/* <DropdownMenuSub>
                     <DropdownMenuSubTrigger className="focus:text-white">
                       <span>Mail</span>
                     </DropdownMenuSubTrigger>
@@ -97,7 +101,7 @@ export const StudentListComponent: React.FC<StudentListComponentProps> = memo(
                         </DropdownMenuItem>
                       </DropdownMenuSubContent>
                     </DropdownMenuPortal>
-                  </DropdownMenuSub>
+                  </DropdownMenuSub> */}
                   <DropdownMenuItem className="text-red-500 focus:bg-red-600">
                     Delete
                   </DropdownMenuItem>

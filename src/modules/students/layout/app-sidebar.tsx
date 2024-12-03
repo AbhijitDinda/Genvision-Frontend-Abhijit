@@ -1,15 +1,4 @@
-import {
-  BookOpenCheck,
-  BookText,
-  Calendar,
-  Command,
-  Home,
-  Inbox,
-  NotebookPen,
-  Search,
-  Settings,
-  Users,
-} from "lucide-react";
+import { BookOpenCheck, Command, Home, NotebookPen, Users } from "lucide-react";
 
 import {
   Sidebar,
@@ -35,14 +24,14 @@ const items = [
   },
   {
     title: "Classmates",
-    url: "/student/assignments",
+    url: "/student/classmates",
     icon: Users,
   },
-  {
-    title: "Assignments",
-    url: "/student/assignments",
-    icon: BookText,
-  },
+  // {
+  //   title: "Assignments",
+  //   url: "/student/assignments",
+  //   icon: BookText,
+  // },
   {
     title: "Teachers",
     url: "/student/teachers",
@@ -60,11 +49,11 @@ const items = [
   },
 ];
 
-const data = {
-  name: "shadcn",
-  email: "m@example.com",
-  avatar: "https://github.com/shadcn.png",
-};
+// const data = {
+//   name: "shadcn",
+//   email: "m@example.com",
+//   avatar: "https://github.com/shadcn.png",
+// };
 
 export function AppSidebar() {
   return (
@@ -106,7 +95,7 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data} />
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
   );
