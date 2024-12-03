@@ -35,6 +35,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { useListStudent } from "../store/hooks";
 
 interface Student {
   id: number;
@@ -109,6 +110,8 @@ export function StudentList() {
     setFilteredStudents(filtered);
   }, [activeTab]);
 
+  const { data: STUDENT_DATA, isLoading } = useListStudent()
+
   return (
     <>
       <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 mt-3">
@@ -119,14 +122,14 @@ export function StudentList() {
             defaultValue="all"
           >
             <div className="flex items-center">
-              <TabsList>
+              {/* <TabsList>
                 <TabsTrigger value="all">All</TabsTrigger>
                 <TabsTrigger value="present">Present</TabsTrigger>
                 <TabsTrigger value="absent">Absent</TabsTrigger>
                 <TabsTrigger value="late" className="hidden sm:flex">
                   Late
                 </TabsTrigger>
-              </TabsList>
+              </TabsList> */}
               <div className="ml-auto flex items-center gap-2">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -184,7 +187,7 @@ export function StudentList() {
               </div>
             </div>
             <TabsContent value={activeTab}>
-              {filteredStudents.length > 0 ? (
+              {STUDENT_DATA?.data.length > 0 ? (
                 <Card>
                   <CardHeader>
                     <CardTitle>Students</CardTitle>
@@ -198,16 +201,12 @@ export function StudentList() {
                             <span className="sr-only">Image</span>
                           </TableHead>
                           <TableHead>Full Name</TableHead>
-                          <TableHead>Status</TableHead>
                           <TableHead className="hidden md:table-cell">
                             Grade
                           </TableHead>
-                          <TableHead className="hidden md:table-cell">
-                            Responsibility
-                          </TableHead>
-                          <TableHead className="hidden md:table-cell">
+                          {/* <TableHead className="hidden md:table-cell">
                             Joined
-                          </TableHead>
+                          </TableHead> */}
                           <TableHead>
                             <span className="sr-only">Actions</span>
                           </TableHead>
@@ -215,7 +214,7 @@ export function StudentList() {
                       </TableHeader>
                       <TableBody>
                         {/* @ts-ignore */}
-                        <StudentListComponent students={filteredStudents} />
+                        <StudentListComponent students={STUDENT_DATA?.data} />
 
                         {/* <TableBody>
                           {filteredStudents.map((student) => (
@@ -251,7 +250,6 @@ export function StudentList() {
                   <CardFooter>
                     <div className="text-xs text-muted-foreground">
                       Showing <strong>1-10</strong> of{" "}
-                      <strong>{filteredStudents.length}</strong> students
                     </div>
                   </CardFooter>
                 </Card>

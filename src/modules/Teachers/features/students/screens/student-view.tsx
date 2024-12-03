@@ -1,9 +1,11 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Attendance, OverviewTab, Performance, Teacher, Marks, Documents } from "../components";
+import { Attendance, Performance, Teacher, Marks, Documents, OverviewTab } from "../components";
+import { useParams } from "react-router-dom";
+
 
 export const StudentView = () => {
-  
+  const { id: studentId } = useParams();
   return (
     <main className="grid flex-1 items-start mt-3">
       <div className="container mx-auto p-4">
@@ -15,16 +17,16 @@ export const StudentView = () => {
         <Tabs defaultValue="overview">
           <TabsList className="mb-4">
             <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="teachers">Teachers</TabsTrigger>
+            {/* <TabsTrigger value="teachers">Teachers</TabsTrigger> */}
             <TabsTrigger value="attendance">Attendance</TabsTrigger>
             <TabsTrigger value="subjects">Subjects</TabsTrigger>
             <TabsTrigger value="marks">Marks</TabsTrigger>
             <TabsTrigger value="performance">Performance</TabsTrigger>
-            <TabsTrigger value="documents">Documents</TabsTrigger>
+            {/* <TabsTrigger value="documents">Documents</TabsTrigger> */}
           </TabsList>
 
           <TabsContent value="overview">
-            <OverviewTab />
+            {studentId && <OverviewTab studentId={studentId} />}
           </TabsContent>
 
           <TabsContent value="attendance">

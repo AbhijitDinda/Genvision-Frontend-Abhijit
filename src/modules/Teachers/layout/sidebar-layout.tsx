@@ -33,15 +33,20 @@ interface SidebarProps {
 
 const itemList: Items[] = [
   {
+    name: "Dashboard",
+    icon: <Home className="h-4 w-4" />,
+    to: "/teacher/dashboard",
+  },
+  {
     name: "Students",
     icon: <Home className="h-4 w-4" />,
     to: "/teacher/students",
   },
-  {
-    name: "Parents",
-    icon: <Users className="h-4 w-4" />,
-    to: "/teacher/parents",
-  },
+  // {
+  //   name: "Parents",
+  //   icon: <Users className="h-4 w-4" />,
+  //   to: "/teacher/parents",
+  // },
   { name: "Class", icon: <Users className="h-4 w-4" />, to: "/teacher/class" },
   {
     name: "Subject",
